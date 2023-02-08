@@ -8,7 +8,7 @@ namespace Note
 {
     public partial class MainWindow : Window
     {
-        List<NoteItem> items = new List<NoteItem>();
+        private readonly List<NoteItem> items = new List<NoteItem>();
 
         public MainWindow()
         {
@@ -21,7 +21,6 @@ namespace Note
             {
                 items.Add(new NoteItem(file));
             }
-
             MessageBox.Show($"{items.First().Name} {items.First().Description}");
         }
     }
