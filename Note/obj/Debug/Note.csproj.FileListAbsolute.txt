@@ -1,0 +1,16 @@
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Note.exe.config
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Note.exe
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Note.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.AssemblyReference.cache
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.SuggestedBindingRedirects.cache
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\MainWindow.g.cs
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.g.cs
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note_MarkupCompile.cache
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note_MarkupCompile.lref
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\MainWindow.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.g.resources
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.Properties.Resources.resources
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.GenerateResource.cache
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CoreCompileInputs.cache
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.exe
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.pdb
