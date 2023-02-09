@@ -21,7 +21,8 @@ namespace Note
             {
                 items.Add(new NoteItem(file));
             }
-            MessageBox.Show($"{items.First().Name} {items.First().Description}");
+
+            NoteList.ItemsSource = items;
         }
     }
 }

@@ -8,10 +8,13 @@ namespace Note.Models
 
         public string Description { get; private set; }
 
+        public string Path { get; private set; }
+
         public NoteItem(string path)
         {
-            Name = new FileInfo(path).Name;
+            Name = new FileInfo(path).Name.Replace(".txt", "");
             Description = File.ReadAllText(path);
+            Path = path;
         }
     }
 }
