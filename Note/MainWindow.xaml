@@ -7,10 +7,220 @@
     xmlns:local="clr-namespace:Note"
     mc:Ignorable="d"
     Title="MainWindow"
-    Height="450"
-    Width="800">
-    
+    Height="550"
+    Width="800"
+    WindowStartupLocation="CenterScreen"
+    AllowsTransparency="True"
+    WindowStyle="None">
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter
+                Property="FontFamily"
+                Value="SF Pro Display"/>
+
+            <Setter
+                Property="FontWeight"
+                Value="Regular"/>
+
+            <Setter
+                Property="BorderThickness"
+                Value="0"/>
+
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter
+                Property="Padding"
+                Value="0"/>
+
+            <Setter
+                Property="Background"
+                Value="Transparent"/>
+
+            <Setter
+                Property="BorderThickness"
+                Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger
+                    Property="IsMouseOver"
+                    Value="True">
+
+                    <Setter
+                        Property="Background"
+                        Value="#CCCCCC"/>
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style
+            x:Key="Exit"
+            TargetType="Button">
+
+            <Setter
+                Property="Padding"
+                Value="0"/>
+
+            <Setter
+                Property="Background"
+                Value="Transparent"/>
+
+            <Setter
+                Property="BorderThickness"
+                Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger
+                    Property="IsMouseOver"
+                    Value="True">
+
+                    <Setter
+                        Property="Background"
+                        Value="#EE4848"/>
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border
+                            BorderThickness="0 0 0 0.5"
+                            BorderBrush="#797979"
+                            Background="{TemplateBinding Background}">
+
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger
+                    Property="IsMouseOver"
+                    Value="True">
+
+                    <Setter
+                        Property="Background"
+                        Value="#CCCCCC"/>
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="34"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Background="#F3F3F3">
+            <Separator
+                VerticalAlignment="Bottom"
+                BorderBrush="#797979"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Row="1"
+            Background="#F3F3F3">
+
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            Background="#F3F3F3">
+
+            <ListView
+                x:Name="NoteList"
+                Background="#F3F3F3"
+                ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid
+                            Width="250"
+                            Height="54">
+
+                            <StackPanel Margin="10 5">
+                                <TextBlock
+                                    FontFamily="SF Pro Display"
+                                    FontSize="14"
+                                    Text="{Binding Name}"
+                                    TextTrimming="CharacterEllipsis"/>
+
+                                <TextBlock
+                                    Height="29"
+                                    Margin="0 0 16 0"
+                                    FontFamily="SF Pro Display"
+                                    Foreground="#797979"
+                                    Text="{Binding Description}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="Wrap"/>
+
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Separator
+            Grid.Column="2"
+            VerticalAlignment="Bottom"
+            BorderBrush="Black"
+            BorderThickness="0.5"/>
+
+        <Separator
+            Grid.RowSpan="3"
+            BorderBrush="#797979"
+            BorderThickness="0.5"
+            HorizontalAlignment="Right">
+
+            <Separator.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Separator.LayoutTransform>
+        </Separator>
     </Grid>
 </Window>
+
