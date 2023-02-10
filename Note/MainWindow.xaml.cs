@@ -32,24 +32,46 @@ namespace Note
             NoteList.ItemsSource = items;
         }
 
-        private void IsEdit(TextRange textRange)
+        private bool IsEdit(TextRange textRange)
         {
             if (textRange.Text != "\r\n" &&
                 textRange.Text.Substring(0, currentItem.Length) != currentItem.GetText())
             {
-                MessageBox.Show("");
+                var result = MessageBox.Show("Сохранить изменения ?", "Save",
+                    MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+                switch (result)
+                {
+                    default:
+                    case MessageBoxResult.Cancel:
+                        return false;
+                    case MessageBoxResult.Yes:
+                        break;
+                    case MessageBoxResult.No:
+                        break;
+                }
+                return true;
             }
+            return true;
         }
 
         private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (NoteList.SelectedItem == currentItem)
+                return;
+
             TextRange textRange = new TextRange(Editor.Document.ContentStart,
                 Editor.Document.ContentEnd);
 
-            IsEdit(textRange);
-
-            currentItem = (NoteItem)NoteList.SelectedItem;
-            textRange.Text = currentItem.GetText();
+            if (IsEdit(textRange))
+            {
+                currentItem = (NoteItem)NoteList.SelectedItem;
+                textRange.Text = currentItem.GetText();
+            }
+            else
+            {
+                NoteList.SelectedItem = currentItem;
+            }
         }
 
         private void ExitClick(object sender, RoutedEventArgs e)
