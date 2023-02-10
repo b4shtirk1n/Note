@@ -44,6 +44,16 @@ namespace Note
             Application.Current.Shutdown();
         }
 
+        private void FullscreenClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MinimizeClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void Update()
         {
             items.Clear();

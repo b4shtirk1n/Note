@@ -4,12 +4,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Note"
     StartupUri="MainWindow.xaml">
-    
+
     <Application.Resources>
         <Style TargetType="Separator">
             <Setter
                 Property="Margin"
                 Value="0"/>
+
+            <Setter
+                Property="BorderThickness"
+                Value="0.5"/>
 
         </Style>
 
@@ -29,6 +33,10 @@
         </Style>
 
         <Style TargetType="Button">
+            <Setter
+                Property="Width"
+                Value="24"/>
+
             <Setter
                 Property="Background"
                 Value="Transparent"/>
@@ -66,6 +74,10 @@
         <Style
             x:Key="Exit"
             TargetType="Button">
+
+            <Setter
+                Property="Width"
+                Value="24"/>
 
             <Setter
                 Property="Background"
@@ -133,3 +145,4 @@
         </Style>
     </Application.Resources>
 </Application>
+

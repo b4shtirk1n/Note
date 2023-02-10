@@ -28,27 +28,17 @@
         <Grid Background="#F3F3F3">
             <StackPanel Orientation="Horizontal">
                 <Button
-                    Width="24"
-                    HorizontalAlignment="Left"
                     Style="{StaticResource Exit}"
                     Click="ExitClick">
 
                     <Image Source="/Imgs/Exit.png"/>
                 </Button>
 
-                <Button
-                    Width="24"
-                    HorizontalAlignment="Left"
-                    Click="ExitClick">
-
+                <Button Click="FullscreenClick">
                     <Image Source="/Imgs/Fullscreen.png"/>
                 </Button>
 
-                <Button
-                    Width="24"
-                    HorizontalAlignment="Left"
-                    Click="ExitClick">
-
+                <Button Click="MinimizeClick">
                     <Image Source="/Imgs/Minimize.png"/>
                 </Button>
             </StackPanel>
@@ -108,20 +98,16 @@
             Grid.RowSpan="2"
             BorderThickness="0"
             FontFamily="SF Pro Display"
-            IsEnabled="False">
-
-        </RichTextBox>
+            IsEnabled="False"/>
 
         <Separator
             Grid.Column="2"
             VerticalAlignment="Bottom"
-            BorderBrush="Black"
-            BorderThickness="0.5"/>
+            BorderBrush="Black"/>
 
         <Separator
             Grid.RowSpan="3"
             BorderBrush="#797979"
-            BorderThickness="0.5"
             HorizontalAlignment="Right">
 
             <Separator.LayoutTransform>
