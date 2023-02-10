@@ -96,7 +96,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Imgs\Close.png" />
+    <Resource Include="Imgs\Minimize.png" />
     <Resource Include="Imgs\Exit.png" />
     <Resource Include="Imgs\Fullscreen.png" />
     <Resource Include="Imgs\Plus.png" />

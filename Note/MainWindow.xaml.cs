@@ -18,6 +18,32 @@ namespace Note
             Update();
         }
 
+        private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Editor.IsEnabled = true;
+
+            if (NoteList.SelectedItem == currentItem)
+                return;
+
+            TextRange textRange = new TextRange(Editor.Document.ContentStart,
+                Editor.Document.ContentEnd);
+
+            if (IsEdit(textRange))
+            {
+                currentItem = (NoteItem)NoteList.SelectedItem;
+                textRange.Text = currentItem.GetText();
+            }
+            else
+            {
+                NoteList.SelectedItem = currentItem;
+            }
+        }
+
+        private void ExitClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         private void Update()
         {
             items.Clear();
@@ -53,30 +79,6 @@ namespace Note
                 return true;
             }
             return true;
-        }
-
-        private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (NoteList.SelectedItem == currentItem)
-                return;
-
-            TextRange textRange = new TextRange(Editor.Document.ContentStart,
-                Editor.Document.ContentEnd);
-
-            if (IsEdit(textRange))
-            {
-                currentItem = (NoteItem)NoteList.SelectedItem;
-                textRange.Text = currentItem.GetText();
-            }
-            else
-            {
-                NoteList.SelectedItem = currentItem;
-            }
-        }
-
-        private void ExitClick(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
     }
 }
