@@ -14,6 +14,13 @@
     WindowStyle="None">
 
     <Window.Resources>
+        <Style TargetType="Separator">
+            <Setter
+                Property="Margin"
+                Value="0"/>
+
+        </Style>
+        
         <Style TargetType="TextBox">
             <Setter
                 Property="FontFamily"
@@ -30,10 +37,6 @@
         </Style>
 
         <Style TargetType="Button">
-            <Setter
-                Property="Padding"
-                Value="0"/>
-
             <Setter
                 Property="Background"
                 Value="Transparent"/>
@@ -71,10 +74,6 @@
         <Style
             x:Key="Exit"
             TargetType="Button">
-
-            <Setter
-                Property="Padding"
-                Value="0"/>
 
             <Setter
                 Property="Background"
@@ -155,6 +154,15 @@
         </Grid.ColumnDefinitions>
 
         <Grid Background="#F3F3F3">
+            <Button
+                Width="24"
+                HorizontalAlignment="Left"
+                Style="{StaticResource Exit}"
+                Click="ExitClick">
+
+                <Image Source="/Imgs/Exit.png"/>
+            </Button>
+
             <Separator
                 VerticalAlignment="Bottom"
                 BorderBrush="#797979"/>
@@ -167,43 +175,51 @@
 
         </Grid>
 
-        <Grid
+        <ListView
+            x:Name="NoteList"
             Grid.Row="2"
-            Background="#F3F3F3">
+            Background="#F3F3F3"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            SelectionChanged="NoteListSelectionChanged">
 
-            <ListView
-                x:Name="NoteList"
-                Background="#F3F3F3"
-                ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                        Width="250"
+                        Height="54">
 
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid
-                            Width="250"
-                            Height="54">
+                        <StackPanel Margin="10 5">
+                            <TextBlock
+                                FontFamily="SF Pro Display"
+                                FontSize="14"
+                                Text="{Binding Name}"
+                                TextTrimming="CharacterEllipsis"/>
 
-                            <StackPanel Margin="10 5">
-                                <TextBlock
-                                    FontFamily="SF Pro Display"
-                                    FontSize="14"
-                                    Text="{Binding Name}"
-                                    TextTrimming="CharacterEllipsis"/>
+                            <TextBlock
+                                Height="29"
+                                Margin="0 0 16 0"
+                                FontFamily="SF Pro Display"
+                                Foreground="#797979"
+                                Text="{Binding Description}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap"/>
 
-                                <TextBlock
-                                    Height="29"
-                                    Margin="0 0 16 0"
-                                    FontFamily="SF Pro Display"
-                                    Foreground="#797979"
-                                    Text="{Binding Description}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+        <RichTextBox
+            x:Name="Editor"
+            Margin="20 15"
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.RowSpan="2"
+            BorderThickness="0"
+            FontFamily="SF Pro Display">
+
+        </RichTextBox>
 
         <Separator
             Grid.Column="2"
