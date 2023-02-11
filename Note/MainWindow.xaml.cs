@@ -11,6 +11,7 @@ namespace Note
     {
         private readonly List<NoteItem> items = new List<NoteItem>();
         private NoteItem currentItem;
+        private bool isChange;
 
         public MainWindow()
         {
@@ -22,7 +23,7 @@ namespace Note
         {
             Editor.IsEnabled = true;
 
-            if (NoteList.SelectedItem == currentItem)
+            if (NoteList.SelectedItem == currentItem || NoteList.ItemsSource == null)
                 return;
 
             TextRange textRange = new TextRange(Editor.Document.ContentStart,
@@ -31,7 +32,9 @@ namespace Note
             if (IsEdit(textRange))
             {
                 currentItem = (NoteItem)NoteList.SelectedItem;
-                textRange.Text = currentItem.GetText();
+                FileStream stream = new FileStream(currentItem.Path, FileMode.Open);
+                textRange.Load(stream, DataFormats.Rtf);
+                stream.Close();
             }
             else
             {
@@ -68,10 +71,29 @@ namespace Note
             NoteList.ItemsSource = items;
         }
 
+        private void Save()
+        {
+            TextRange textRange = new TextRange(Editor.Document.ContentStart,
+                Editor.Document.ContentEnd);
+
+            FileStream stream = new FileStream(currentItem.Path, FileMode.Create);
+            textRange.Save(stream, DataFormats.Rtf);
+            currentItem.Description = textRange.Text;
+            stream.Close();
+        }
+
+        private void Edit(DependencyProperty property, object value)
+        {
+            Editor.Selection.ApplyPropertyValue(property, value);
+            isChange = true;
+        }
+
         private bool IsEdit(TextRange textRange)
         {
-            if (textRange.Text != "\r\n" &&
-                textRange.Text.Substring(0, currentItem.Length) != currentItem.GetText())
+            if (currentItem == null)
+                return true;
+
+            if (textRange.Text != currentItem.Text || isChange)
             {
                 var result = MessageBox.Show("Сохранить изменения ?", "Save",
                     MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
@@ -82,10 +104,13 @@ namespace Note
                     case MessageBoxResult.Cancel:
                         return false;
                     case MessageBoxResult.Yes:
+                        Save();
+                        NoteList.Items.Refresh();
                         break;
                     case MessageBoxResult.No:
                         break;
                 }
+                isChange = false;
                 return true;
             }
             return true;

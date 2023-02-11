@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace Note.Models
 {
@@ -8,21 +10,23 @@ namespace Note.Models
 
         public string Name { get; private set; }
 
-        public int Length { get; private set; }
+        public string Text { get; private set; }
 
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         public NoteItem(string path)
         {
             Path = path;
-            Name = new FileInfo(path).Name.Replace(".txt", "");
-            Length = GetText().Length;
-            Description = Length > 80 ? GetText().Substring(0, 80) : GetText();
-        }
+            Name = new FileInfo(path).Name.Replace(".rtf", "");
 
-        public string GetText()
-        {
-            return File.ReadAllText(Path);
+            var doc = new FlowDocument();
+            FileStream fileStream = new FileStream(Path, FileMode.OpenOrCreate);
+            TextRange textRange = new TextRange(doc.ContentStart, doc.ContentEnd);
+            textRange.Load(fileStream, DataFormats.Rtf);
+            fileStream.Close();
+
+            Text = textRange.Text;
+            Description = Text.Length > 80 ? Text.Substring(0, 80) : Text;
         }
     }
 }
