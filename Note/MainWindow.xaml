@@ -68,7 +68,8 @@
             <Button
                 Margin="7 0 0 0"
                 Width="14"
-                Height="14">
+                Height="14"
+                Click="OpenCreateClick">
                 
                 <Image Source="/Imgs/Add.png"/>
             </Button>
@@ -76,29 +77,15 @@
             <TextBox
                 x:Name="Search"
                 Margin="5 0"
-                Padding="5 0"
                 Width="216"
                 Height="18"
                 FontSize="10"
-                FontFamily="SF Pro Display"
                 Foreground="#797979"
-                BorderBrush="#797979"
                 BorderThickness="0.5"
-                VerticalContentAlignment="Center"
                 Text="Поиск..."
                 GotFocus="SearchGotFocus"
-                LostFocus="SearchLostFocus">
+                LostFocus="SearchLostFocus"/>
 
-                <TextBox.Resources>
-                    <Style TargetType="Border">
-                        <Setter
-                            Property="CornerRadius"
-                            Value="6"/>
-
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-            
         </StackPanel>
 
         <ListView
@@ -160,6 +147,53 @@
                 <RotateTransform Angle="90"/>
             </Separator.LayoutTransform>
         </Separator>
+
+        <Grid
+            x:Name="CreateWindow"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            Visibility="Hidden">
+
+            <Grid
+                Background="Black"
+                Opacity="0.5"/>
+
+            <StackPanel
+                Width="400"
+                Height="150"
+                Background="White">
+
+                <TextBlock
+                    Margin="5"
+                    FontFamily="SF Pro Display"
+                    FontWeight="Black"
+                    Foreground="Black"
+                    TextAlignment="Center"
+                    Text="Create note"/>
+
+                <Separator BorderBrush="#797979"/>
+
+                <TextBox
+                    x:Name="FileName"
+                    Margin="30"
+                    Width="200"
+                    Height="20"
+                    FontSize="12"
+                    VerticalAlignment="Top"/>
+
+                <Border
+                    Width="100"
+                    BorderBrush="#797979"
+                    BorderThickness="0.5">
+
+                    <Button
+                        Width="100"
+                        Content="Create"
+                        Click="CreateClick"/>
+
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
 

@@ -22,12 +22,12 @@
                 Value="24"/>
 
             <Setter
-                Property="Background"
-                Value="Transparent"/>
+                Property="Height"
+                Value="24"/>
 
             <Setter
-                Property="BorderThickness"
-                Value="0"/>
+                Property="Background"
+                Value="Transparent"/>
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -67,10 +67,6 @@
                 Property="Background"
                 Value="Transparent"/>
 
-            <Setter
-                Property="BorderThickness"
-                Value="0"/>
-
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -97,6 +93,33 @@
             </Style.Triggers>
         </Style>
 
+        <Style TargetType="TextBox">
+            <Setter
+                Property="Padding"
+                Value="5 0"/>
+
+            <Setter
+                Property="FontFamily"
+                Value="SF Pro Display"/>
+
+            <Setter
+                Property="BorderBrush"
+                Value="#797979"/>
+
+            <Setter
+                Property="VerticalContentAlignment"
+                Value="Center"/>
+
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter
+                            Property="CornerRadius"
+                            Value="6"/>
+
+                </Style>
+            </Style.Resources>
+        </Style>
+        
         <Style TargetType="ListViewItem">
             <Setter Property="Template">
                 <Setter.Value>

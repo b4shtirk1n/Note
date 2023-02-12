@@ -11,6 +11,7 @@ namespace Note
     public partial class MainWindow : Window
     {
         private readonly List<NoteItem> items = new List<NoteItem>();
+        private const string path = "Documents";
         private NoteItem currentItem;
         private TextRange textRange;
         private bool isChange;
@@ -44,10 +45,7 @@ namespace Note
             }
         }
 
-        private void WindowMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
+        private void WindowMouseDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         private void ExitClick(object sender, RoutedEventArgs e)
         {
@@ -67,26 +65,38 @@ namespace Note
             }
         }
 
-        private void MinimizeClick(object sender, RoutedEventArgs e)
-        {
+        private void MinimizeClick(object sender, RoutedEventArgs e) =>
             WindowState = WindowState.Minimized;
+
+        private void OpenCreatelick(object sender, RoutedEventArgs e) =>
+            CreateWindow.Visibility = Visibility.Visible;
+
+        private void CreateClick(object sender, RoutedEventArgs e)
+        {
+            if (FileName.Text != string.Empty)
+            {
+                var doc = new FlowDocument();
+                FileStream fileStream = new FileStream($"{path}/{FileName.Text}.rtf",
+                    FileMode.Create);
+
+                TextRange textRange = new TextRange(doc.ContentStart, doc.ContentEnd);
+                textRange.Save(fileStream, DataFormats.Rtf);
+                fileStream.Close();
+            }
+            Update();
+            CreateWindow.Visibility = Visibility.Hidden;
         }
 
-        private void SearchGotFocus(object sender, RoutedEventArgs e)
-        {
+        private void SearchGotFocus(object sender, RoutedEventArgs e) =>
             TbxFocus(Search, "Поиск...", string.Empty);
-        }
 
-        private void SearchLostFocus(object sender, RoutedEventArgs e)
-        {
+        private void SearchLostFocus(object sender, RoutedEventArgs e) =>
             TbxFocus(Search, string.Empty, "Поиск...");
-        }
 
         private void Update()
         {
             items.Clear();
 
-            string path = "Documents";
             string[] files = Directory.GetFiles(path);
 
             foreach (string file in files)
@@ -94,6 +104,7 @@ namespace Note
                 items.Add(new NoteItem(file));
             }
             NoteList.ItemsSource = items;
+            NoteList.Items.Refresh();
         }
 
         private void Save()
