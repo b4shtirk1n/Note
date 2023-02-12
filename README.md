@@ -2,7 +2,7 @@
 
 ## This simple note app created with WPF .NET Framework
 
-## New release Features
+## Expected release Features
 
 - Text formating
 - Finding documents
