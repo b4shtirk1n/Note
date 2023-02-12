@@ -26,31 +26,28 @@ namespace Note
         {
             Editor.IsEnabled = true;
 
-            if (NoteList.SelectedItem == currentItem || NoteList.ItemsSource == null)
+            if (NoteList.SelectedItem == currentItem || NoteList.SelectedItem == null)
                 return;
+
+            if (currentItem != null)
+                Save();
 
             textRange = new TextRange(Editor.Document.ContentStart,
                 Editor.Document.ContentEnd);
 
-            if (IsEdit(textRange))
-            {
-                currentItem = (NoteItem)NoteList.SelectedItem;
-                FileStream stream = new FileStream(currentItem.Path, FileMode.Open);
-                textRange.Load(stream, DataFormats.Rtf);
-                stream.Close();
-            }
-            else
-            {
-                NoteList.SelectedItem = currentItem;
-            }
+            currentItem = (NoteItem)NoteList.SelectedItem;
+            FileStream stream = new FileStream(currentItem.Path, FileMode.Open);
+            textRange.Load(stream, DataFormats.Rtf);
+            stream.Close();
+            Update();
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         private void ExitClick(object sender, RoutedEventArgs e)
         {
-            if (IsEdit(textRange))
-                Application.Current.Shutdown();
+            Save();
+            Application.Current.Shutdown();
         }
 
         private void FullscreenClick(object sender, RoutedEventArgs e)
@@ -122,34 +119,6 @@ namespace Note
         {
             Editor.Selection.ApplyPropertyValue(property, value);
             isChange = true;
-        }
-
-        private bool IsEdit(TextRange textRange)
-        {
-            if (currentItem == null)
-                return true;
-
-            if (textRange.Text != currentItem.Text || isChange)
-            {
-                var result = MessageBox.Show("Сохранить изменения ?", "Save",
-                    MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-
-                switch (result)
-                {
-                    default:
-                    case MessageBoxResult.Cancel:
-                        return false;
-                    case MessageBoxResult.Yes:
-                        Save();
-                        NoteList.Items.Refresh();
-                        break;
-                    case MessageBoxResult.No:
-                        break;
-                }
-                isChange = false;
-                return true;
-            }
-            return true;
         }
 
         private void TbxFocus(TextBox tbx, string check, string change)
