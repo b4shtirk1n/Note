@@ -68,7 +68,7 @@ namespace Note
         private void MinimizeClick(object sender, RoutedEventArgs e) =>
             WindowState = WindowState.Minimized;
 
-        private void OpenCreatelick(object sender, RoutedEventArgs e) =>
+        private void OpenCreateClick(object sender, RoutedEventArgs e) =>
             CreateWindow.Visibility = Visibility.Visible;
 
         private void CreateClick(object sender, RoutedEventArgs e)

@@ -70,7 +70,7 @@
                 Width="14"
                 Height="14"
                 Click="OpenCreateClick">
-                
+
                 <Image Source="/Imgs/Add.png"/>
             </Button>
 
