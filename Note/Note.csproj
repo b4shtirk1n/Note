@@ -99,8 +99,7 @@
     <Resource Include="Imgs\Minimize.png" />
     <Resource Include="Imgs\Exit.png" />
     <Resource Include="Imgs\Fullscreen.png" />
-    <Resource Include="Imgs\Plus.png" />
-    <Resource Include="Imgs\search.png" />
+    <Resource Include="Imgs\Add.png" />
     <Resource Include="Imgs\Settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

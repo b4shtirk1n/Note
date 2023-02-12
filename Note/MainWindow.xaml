@@ -4,14 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:Note"
     mc:Ignorable="d"
     Title="Note"
     Height="550"
     Width="800"
     WindowStartupLocation="CenterScreen"
     AllowsTransparency="True"
-    WindowStyle="None">
+    WindowStyle="None"
+    MouseDown="WindowMouseDown">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -41,6 +41,17 @@
                 <Button Click="MinimizeClick">
                     <Image Source="/Imgs/Minimize.png"/>
                 </Button>
+
+                <TextBlock
+                    Width="154"
+                    FontFamily="SF Pro Display"
+                    VerticalAlignment="Center"
+                    TextAlignment="Center"
+                    Text="Note"/>
+
+                <Button Click="MinimizeClick">
+                    <Image Source="/Imgs/Settings.png"/>
+                </Button>
             </StackPanel>
 
             <Separator
@@ -49,11 +60,46 @@
 
         </Grid>
 
-        <Grid
+        <StackPanel
             Grid.Row="1"
-            Background="#F3F3F3">
+            Background="#F3F3F3"
+            Orientation="Horizontal">
 
-        </Grid>
+            <Button
+                Margin="7 0 0 0"
+                Width="14"
+                Height="14">
+                
+                <Image Source="/Imgs/Add.png"/>
+            </Button>
+
+            <TextBox
+                x:Name="Search"
+                Margin="5 0"
+                Padding="5 0"
+                Width="216"
+                Height="18"
+                FontSize="10"
+                FontFamily="SF Pro Display"
+                Foreground="#797979"
+                BorderBrush="#797979"
+                BorderThickness="0.5"
+                VerticalContentAlignment="Center"
+                Text="Поиск..."
+                GotFocus="SearchGotFocus"
+                LostFocus="SearchLostFocus">
+
+                <TextBox.Resources>
+                    <Style TargetType="Border">
+                        <Setter
+                            Property="CornerRadius"
+                            Value="6"/>
+
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            
+        </StackPanel>
 
         <ListView
             x:Name="NoteList"

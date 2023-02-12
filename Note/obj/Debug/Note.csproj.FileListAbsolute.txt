@@ -6,7 +6,6 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.SuggestedBindin
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\MainWindow.g.cs
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.g.cs
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note_MarkupCompile.cache
-C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note_MarkupCompile.lref
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\MainWindow.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.g.resources
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.Properties.Resources.resources
