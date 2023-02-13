@@ -1,4 +1,5 @@
 ﻿using Note.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -46,27 +47,32 @@ namespace Note
 
         private void ExitClick(object sender, RoutedEventArgs e)
         {
-            Save();
+            if (currentItem != null)
+                Save();
+
             Application.Current.Shutdown();
         }
 
         private void FullscreenClick(object sender, RoutedEventArgs e)
         {
+            ResizeMode = ResizeMode.CanResize;
+
             if (WindowState == WindowState.Normal)
-            {
                 WindowState = WindowState.Maximized;
-            }
             else
-            {
                 WindowState = WindowState.Normal;
-            }
         }
 
-        private void MinimizeClick(object sender, RoutedEventArgs e) =>
+        private void MinimizeClick(object sender, RoutedEventArgs e)
+        {
+            WindowStyle = WindowStyle.SingleBorderWindow;
             WindowState = WindowState.Minimized;
+        }
 
         private void OpenCreateClick(object sender, RoutedEventArgs e) =>
-            CreateWindow.Visibility = Visibility.Visible;
+            CreateDialog.Visibility = Visibility.Visible;
+
+        private void CreateDialogMouseDown(object sender, MouseButtonEventArgs e) => CloseDialog();
 
         private void CreateClick(object sender, RoutedEventArgs e)
         {
@@ -81,7 +87,7 @@ namespace Note
                 fileStream.Close();
             }
             Update();
-            CreateWindow.Visibility = Visibility.Hidden;
+            CloseDialog();
         }
 
         private void SearchGotFocus(object sender, RoutedEventArgs e) =>
@@ -92,9 +98,9 @@ namespace Note
 
         private void Update()
         {
-            items.Clear();
-
             string[] files = Directory.GetFiles(path);
+
+            items.Clear();
 
             foreach (string file in files)
             {
@@ -125,6 +131,21 @@ namespace Note
         {
             if (tbx.Text == check)
                 tbx.Text = change;
+        }
+
+        private void CloseDialog()
+        {
+            FileName.Text = string.Empty;
+            CreateDialog.Visibility = Visibility.Hidden;
+        }
+
+        private void WindowStateChanged(object sender, EventArgs e)
+        {
+            ResizeMode = WindowState == WindowState.Maximized ?
+                ResizeMode.CanResize : ResizeMode.NoResize;
+
+            if (WindowState != WindowState.Minimized)
+                WindowStyle = WindowStyle.None;
         }
     }
 }

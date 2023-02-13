@@ -6,12 +6,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Note"
-    Height="550"
     Width="800"
+    Height="550"
+    MinWidth="650"
+    MinHeight="400"
     WindowStartupLocation="CenterScreen"
-    AllowsTransparency="True"
     WindowStyle="None"
-    MouseDown="WindowMouseDown">
+    ResizeMode="NoResize"
+    MouseLeftButtonDown="WindowMouseDown"
+    StateChanged="WindowStateChanged">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -149,10 +152,11 @@
         </Separator>
 
         <Grid
-            x:Name="CreateWindow"
+            x:Name="CreateDialog"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
-            Visibility="Hidden">
+            Visibility="Hidden"
+            MouseDown="CreateDialogMouseDown">
 
             <Grid
                 Background="Black"
