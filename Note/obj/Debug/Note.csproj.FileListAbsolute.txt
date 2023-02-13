@@ -14,3 +14,4 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CoreCompileInpu
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.exe
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.pdb
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\GeneratedInternalTypeHelper.g.cs
