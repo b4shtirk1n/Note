@@ -11,12 +11,14 @@
     MinWidth="650"
     MinHeight="400"
     WindowStartupLocation="CenterScreen"
-    WindowStyle="None"
-    ResizeMode="NoResize"
     MouseLeftButtonDown="WindowMouseDown"
     StateChanged="WindowStateChanged">
 
-    <Grid>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid x:Name="OwnerScreen">
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
             <RowDefinition Height="34"/>

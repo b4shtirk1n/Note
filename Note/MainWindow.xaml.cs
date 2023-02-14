@@ -55,19 +55,14 @@ namespace Note
 
         private void FullscreenClick(object sender, RoutedEventArgs e)
         {
-            ResizeMode = ResizeMode.CanResize;
-
             if (WindowState == WindowState.Normal)
                 WindowState = WindowState.Maximized;
             else
                 WindowState = WindowState.Normal;
         }
 
-        private void MinimizeClick(object sender, RoutedEventArgs e)
-        {
-            WindowStyle = WindowStyle.SingleBorderWindow;
+        private void MinimizeClick(object sender, RoutedEventArgs e) =>
             WindowState = WindowState.Minimized;
-        }
 
         private void OpenCreateClick(object sender, RoutedEventArgs e) =>
             CreateDialog.Visibility = Visibility.Visible;
@@ -141,11 +136,15 @@ namespace Note
 
         private void WindowStateChanged(object sender, EventArgs e)
         {
-            ResizeMode = WindowState == WindowState.Maximized ?
-                ResizeMode.CanResize : ResizeMode.NoResize;
-
-            if (WindowState != WindowState.Minimized)
-                WindowStyle = WindowStyle.None;
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    OwnerScreen.Margin = new Thickness(0);
+                    break;
+                case WindowState.Maximized:
+                    OwnerScreen.Margin = new Thickness(5);
+                    break;
+            }
         }
     }
 }

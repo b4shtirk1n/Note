@@ -14,4 +14,12 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CoreCompileInpu
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.exe
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.pdb
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.baml
-C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\MaterialDesignColors.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\MaterialDesignColors.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CopyComplete
