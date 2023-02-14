@@ -29,7 +29,7 @@ namespace Note
 
                 AutoUpdater.Mandatory = true;
                 AutoUpdater.InstallationPath = currentDirectory.FullName;
-                AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/TestUpdater/main/test.xml");
+                AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/Note/Release/Version.xml");
             }
             catch
             {
