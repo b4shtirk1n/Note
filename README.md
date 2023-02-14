@@ -13,7 +13,7 @@
  - ❌ Deleting documents
  - ❌ Renaming documents
  - ✅ Resize window
- - ❌ Dark theme
+ - ❌ Different theme
  - ❌ Crossplatform app
  - ❌ Cloud storage
  - ❌ Share documents
