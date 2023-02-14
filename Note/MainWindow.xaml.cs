@@ -1,4 +1,5 @@
-﻿using Note.Models;
+﻿using AutoUpdaterDotNET;
+using Note.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +22,19 @@ namespace Note
         {
             InitializeComponent();
             Update();
+
+            try
+            {
+                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+
+                AutoUpdater.Mandatory = true;
+                AutoUpdater.InstallationPath = currentDirectory.FullName;
+                AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/TestUpdater/main/test.xml");
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка при обновлении");
+            }
         }
 
         private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
