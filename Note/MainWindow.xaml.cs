@@ -30,6 +30,7 @@ namespace Note
                 var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
 
                 AutoUpdater.Mandatory = true;
+                AutoUpdater.RunUpdateAsAdmin = false;
                 AutoUpdater.InstallationPath = currentDirectory.FullName;
                 AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/Note/Release/Version.xml");
             }
