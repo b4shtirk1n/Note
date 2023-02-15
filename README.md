@@ -10,6 +10,7 @@
 
  - ❌ Text formating
  - ✅ Finding documents
+ - ✅ Editing documents
  - ❌ Deleting documents
  - ❌ Renaming documents
  - ✅ Resize window
