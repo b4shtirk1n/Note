@@ -3,6 +3,7 @@ using Note.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -12,8 +13,9 @@ namespace Note
 {
     public partial class MainWindow : Window
     {
-        private readonly List<NoteItem> items = new List<NoteItem>();
+        private List<NoteItem> items = new List<NoteItem>();
         private const string path = "Documents";
+        private string find;
         private NoteItem currentItem;
         private TextRange textRange;
         private bool isChange;
@@ -78,20 +80,30 @@ namespace Note
         private void MinimizeClick(object sender, RoutedEventArgs e) =>
             WindowState = WindowState.Minimized;
 
-        private void OpenCreateClick(object sender, RoutedEventArgs e) =>
+        private void OpenCreateClick(object sender, RoutedEventArgs e)
+        {
             CreateDialog.Visibility = Visibility.Visible;
+            FileName.Focus();
+        }
 
         private void CreateDialogMouseDown(object sender, MouseButtonEventArgs e) => CloseDialog();
 
+        private void CreateKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && CreateDialog.Visibility == Visibility.Visible)
+                CreateClick(sender, null);
+        }
+
         private void CreateClick(object sender, RoutedEventArgs e)
         {
-            if (FileName.Text != string.Empty)
+            if (FileName.Text != string.Empty && items.Find(x => x.Name == FileName.Text) == null)
             {
                 var doc = new FlowDocument();
                 FileStream fileStream = new FileStream($"{path}/{FileName.Text}.rtf",
                     FileMode.Create);
 
                 TextRange textRange = new TextRange(doc.ContentStart, doc.ContentEnd);
+                textRange.Text = FileName.Text;
                 textRange.Save(fileStream, DataFormats.Rtf);
                 fileStream.Close();
             }
@@ -105,6 +117,14 @@ namespace Note
         private void SearchLostFocus(object sender, RoutedEventArgs e) =>
             TbxFocus(Search, string.Empty, "Поиск...");
 
+        private void SearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            find = Search.Text;
+
+            if (NoteList != null)
+                Update();
+        }
+
         private void Update()
         {
             string[] files = Directory.GetFiles(path);
@@ -115,6 +135,11 @@ namespace Note
             {
                 items.Add(new NoteItem(file));
             }
+
+            if (find != "Поиск..." && items != null)
+                items = items.Where(x => x.Name.Contains(Search.Text) ||
+                    x.Text.Contains(Search.Text)).ToList();
+
             NoteList.ItemsSource = items;
             NoteList.Items.Refresh();
         }
@@ -144,8 +169,12 @@ namespace Note
 
         private void CloseDialog()
         {
-            FileName.Text = string.Empty;
+            if (FileName.Text != string.Empty)
+                NoteList.SelectedItem = items.First(x => x.Name == FileName.Text);
+
             CreateDialog.Visibility = Visibility.Hidden;
+            FileName.Text = string.Empty;
+            Editor.Focus();
         }
 
         private void WindowStateChanged(object sender, EventArgs e)

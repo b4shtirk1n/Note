@@ -12,7 +12,8 @@
     MinHeight="400"
     WindowStartupLocation="CenterScreen"
     MouseLeftButtonDown="WindowMouseDown"
-    StateChanged="WindowStateChanged">
+    StateChanged="WindowStateChanged"
+    KeyDown="CreateKeyDown">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
@@ -30,8 +31,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid Background="#F3F3F3">
-            <StackPanel Orientation="Horizontal">
+        <StackPanel
+            Grid.ColumnSpan="2"
+            Orientation="Horizontal">
+
+            <StackPanel
+                Width="250"
+                Background="#F3F3F3"
+                Orientation="Horizontal">
+                
                 <Button
                     Style="{StaticResource Exit}"
                     Click="ExitClick">
@@ -54,16 +62,24 @@
                     TextAlignment="Center"
                     Text="Note"/>
 
-                <Button Click="MinimizeClick">
+                <Button>
                     <Image Source="/Imgs/Settings.png"/>
                 </Button>
             </StackPanel>
+        </StackPanel>
 
-            <Separator
-                VerticalAlignment="Bottom"
-                BorderBrush="#797979"/>
+        <StackPanel
+            Width="110"
+            Height="14"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
 
-        </Grid>
+        </StackPanel>
+
+        <Separator
+            VerticalAlignment="Bottom"
+            BorderBrush="#797979"/>
 
         <StackPanel
             Grid.Row="1"
@@ -89,7 +105,8 @@
                 BorderThickness="0.5"
                 Text="Поиск..."
                 GotFocus="SearchGotFocus"
-                LostFocus="SearchLostFocus"/>
+                LostFocus="SearchLostFocus"
+                TextChanged="SearchTextChanged"/>
 
         </StackPanel>
 
@@ -97,13 +114,13 @@
             x:Name="NoteList"
             Grid.Row="2"
             Background="#F3F3F3"
-            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectionChanged="NoteListSelectionChanged">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid
-                        Width="250"
+                    <StackPanel
+                        Width="240"
                         Height="54">
 
                         <StackPanel Margin="10 5">
@@ -123,7 +140,7 @@
                                 TextWrapping="Wrap"/>
 
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -158,11 +175,12 @@
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Visibility="Hidden"
-            MouseDown="CreateDialogMouseDown">
+            >
 
             <Grid
                 Background="Black"
-                Opacity="0.5"/>
+                Opacity="0.5"
+                MouseDown="CreateDialogMouseDown"/>
 
             <StackPanel
                 Width="400"
