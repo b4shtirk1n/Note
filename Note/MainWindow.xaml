@@ -10,6 +10,7 @@
     Height="550"
     MinWidth="650"
     MinHeight="400"
+    Icon="/Imgs/Icon.png"
     WindowStartupLocation="CenterScreen"
     MouseLeftButtonDown="WindowMouseDown"
     StateChanged="WindowStateChanged"
@@ -41,7 +42,7 @@
                 Orientation="Horizontal">
                 
                 <Button
-                    Style="{StaticResource Exit}"
+                    Style="{DynamicResource Exit}"
                     Click="ExitClick">
 
                     <Image Source="/Imgs/Exit.png"/>
@@ -174,12 +175,12 @@
             x:Name="CreateDialog"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
-            Visibility="Hidden"
-            >
+            Visibility="Hidden">
 
             <Grid
+                x:Name="BackCreateDialog"
                 Background="Black"
-                Opacity="0.5"
+                Opacity="0"
                 MouseDown="CreateDialogMouseDown"/>
 
             <StackPanel

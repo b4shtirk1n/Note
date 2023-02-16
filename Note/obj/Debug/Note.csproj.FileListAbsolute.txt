@@ -13,7 +13,6 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.GenerateResourc
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CoreCompileInputs.cache
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.exe
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.pdb
-C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\runtimes\win-x86\native\WebView2Loader.dll
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\runtimes\win-x64\native\WebView2Loader.dll
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\runtimes\win-arm64\native\WebView2Loader.dll
@@ -28,3 +27,6 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Web.WebView2.WinF
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Web.WebView2.Wpf.xml
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note_Content.g.cs
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CopyComplete
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\White.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\Black.baml

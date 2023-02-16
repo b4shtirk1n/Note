@@ -1,4 +1,5 @@
 ﻿using AutoUpdaterDotNET;
+using Note.Helpers;
 using Note.Models;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,15 @@ namespace Note
         private TextRange textRange;
         private bool isChange;
 
+        private readonly List<Theme> themes = new List<Theme>()
+        {
+            new Theme (0, "White", "\\Themes\\White.xaml"),
+            new Theme (1, "Black", "\\Themes\\Black.xaml")
+        };
+
         public MainWindow()
         {
+            ChangeSkin(Properties.Settings.Default.Theme);
             InitializeComponent();
             Update();
 
@@ -38,6 +46,17 @@ namespace Note
             {
                 MessageBox.Show("Ошибка при обновлении");
             }
+        }
+
+        public void ChangeSkin(int themeid)
+        {
+            Theme newTheme = themes.Find(x => x.Id == themeid);
+            ResourceDictionary theme = Application.LoadComponent(new Uri(newTheme.Path,
+                UriKind.Relative)) as ResourceDictionary;
+
+            Resources.Clear();
+            Resources.MergedDictionaries.Clear();
+            Resources.MergedDictionaries.Add(theme);
         }
 
         private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,7 +102,15 @@ namespace Note
 
         private void OpenCreateClick(object sender, RoutedEventArgs e)
         {
-            CreateDialog.Visibility = Visibility.Visible;
+            OpacityAnimation[] createDialog =
+            {
+                new OpacityAnimation(0, 0.5, BackCreateDialog),
+                new OpacityAnimation(0, 1, CreateDialog)
+            };
+
+            foreach (var item in createDialog)
+                item.StartIn();
+
             FileName.Focus();
         }
 
@@ -170,10 +197,18 @@ namespace Note
 
         private void CloseDialog()
         {
+            OpacityAnimation[] createDialog =
+            {
+                new OpacityAnimation(0, 0.5, BackCreateDialog),
+                new OpacityAnimation(0, 1, CreateDialog)
+            };
+
+            foreach (var item in createDialog)
+                item.StartOut();
+
             if (FileName.Text != string.Empty)
                 NoteList.SelectedItem = items.First(x => x.Name == FileName.Text);
 
-            CreateDialog.Visibility = Visibility.Hidden;
             FileName.Text = string.Empty;
             Editor.Focus();
         }
@@ -189,6 +224,11 @@ namespace Note
                     OwnerScreen.Margin = new Thickness(5);
                     break;
             }
+        }
+
+        private void OpacityAnimationCompleted(object sender, EventArgs e)
+        {
+            CreateDialog.Visibility = Visibility.Visible;
         }
     }
 }
