@@ -14,13 +14,16 @@
     WindowStartupLocation="CenterScreen"
     MouseLeftButtonDown="WindowMouseDown"
     StateChanged="WindowStateChanged"
-    KeyDown="CreateKeyDown">
+    KeyDown="BackgroundKeyDown">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
 
-    <Grid x:Name="OwnerScreen">
+    <Grid
+        x:Name="OwnerScreen"
+        MouseDown="OwnerScreenMouseDown">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
             <RowDefinition Height="34"/>
@@ -33,40 +36,38 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel
-            Grid.ColumnSpan="2"
+            Width="250"
+            Background="#F3F3F3"
             Orientation="Horizontal">
 
-            <StackPanel
-                Width="250"
-                Background="#F3F3F3"
-                Orientation="Horizontal">
-                
-                <Button
-                    Style="{DynamicResource Exit}"
-                    Click="ExitClick">
+            <Button
+                Style="{DynamicResource Exit}"
+                Click="ExitClick">
 
-                    <Image Source="/Imgs/Exit.png"/>
-                </Button>
+                <Image Source="/Imgs/Exit.png"/>
+            </Button>
 
-                <Button Click="FullscreenClick">
-                    <Image Source="/Imgs/Fullscreen.png"/>
-                </Button>
+            <Button Click="FullscreenClick">
+                <Image Source="/Imgs/Fullscreen.png"/>
+            </Button>
 
-                <Button Click="MinimizeClick">
-                    <Image Source="/Imgs/Minimize.png"/>
-                </Button>
+            <Button Click="MinimizeClick">
+                <Image Source="/Imgs/Minimize.png"/>
+            </Button>
 
-                <TextBlock
-                    Width="154"
-                    FontFamily="SF Pro Display"
-                    VerticalAlignment="Center"
-                    TextAlignment="Center"
-                    Text="Note"/>
+            <TextBlock
+                Width="154"
+                FontFamily="SF Pro Display"
+                VerticalAlignment="Center"
+                TextAlignment="Center"
+                Text="Note"/>
 
-                <Button>
-                    <Image Source="/Imgs/Settings.png"/>
-                </Button>
-            </StackPanel>
+            <Button
+                Click="OpenMoreCtxClick"
+                LostFocus="MoreCtxLostFocus">
+
+                <Image Source="/Imgs/Settings.png"/>
+            </Button>
         </StackPanel>
 
         <StackPanel
@@ -91,7 +92,7 @@
                 Margin="7 0 0 0"
                 Width="14"
                 Height="14"
-                Click="OpenCreateClick">
+                Click="OpenCreateDocClick">
 
                 <Image Source="/Imgs/Add.png"/>
             </Button>
@@ -171,17 +172,79 @@
             </Separator.LayoutTransform>
         </Separator>
 
+        <Border
+            x:Name="MoreCtx"
+            Margin="226 24"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="3"
+            Width="100"
+            Height="75"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="White"
+            BorderBrush="Black"
+            BorderThickness="0.5"
+            Visibility="Hidden">
+
+            <StackPanel Width="100">
+                <Border
+                    BorderBrush="Black"
+                    BorderThickness="0.25">
+
+                    <Button Width="100">
+                        <TextBlock
+                            Padding="10 0"
+                            Width="100"
+                            Text="Импорт"
+                            HorizontalAlignment="Left"/>
+
+                    </Button>
+                </Border>
+
+                <Border
+                    BorderBrush="Black"
+                    BorderThickness="0.25">
+
+                    <Button Width="100">
+                        <TextBlock
+                            Padding="10 0"
+                            Width="100"
+                            Text="Настройки"
+                            HorizontalAlignment="Left"/>
+
+                    </Button>
+                </Border>
+
+                <Border
+                    BorderBrush="Black"
+                    BorderThickness="0.25">
+
+                    <Button
+                        Width="100"
+                        Click="OpenAppInfoClick">
+
+                        <TextBlock
+                            Padding="10 0"
+                            Width="100"
+                            Text="О программе"
+                            HorizontalAlignment="Left"/>
+
+                    </Button>
+                </Border>
+            </StackPanel>
+        </Border>
+        
         <Grid
-            x:Name="CreateDialog"
+            x:Name="CreateDoc"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Visibility="Hidden">
 
             <Grid
-                x:Name="BackCreateDialog"
+                x:Name="BackCreateDoc"
                 Background="Black"
                 Opacity="0"
-                MouseDown="CreateDialogMouseDown"/>
+                MouseDown="CreateDocMouseDown"/>
 
             <StackPanel
                 Width="400"
@@ -194,7 +257,7 @@
                     FontWeight="Black"
                     Foreground="Black"
                     TextAlignment="Center"
-                    Text="Create note"/>
+                    Text="Создать заметку"/>
 
                 <Separator BorderBrush="#797979"/>
 
@@ -213,12 +276,59 @@
 
                     <Button
                         Width="100"
-                        Content="Create"
+                        Content="Создать"
                         Click="CreateClick"/>
+
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <Grid
+            x:Name="AppInfo"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            Visibility="Hidden">
+
+            <Grid
+                x:Name="BackAppInfo"
+                Background="Black"
+                Opacity="0"
+                MouseDown="BackAppInfoMouseDown"/>
+
+            <StackPanel
+                Width="300"
+                Height="150"
+                Background="White">
+
+                <TextBlock
+                    Margin="5"
+                    FontFamily="SF Pro Display"
+                    FontWeight="Black"
+                    Foreground="Black"
+                    TextAlignment="Center"
+                    Text="О программе"/>
+
+                <Separator BorderBrush="#797979"/>
+
+                <TextBlock
+                    Margin="30"
+                    Height="20"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Text="Текущая версия - v0.8"/>
+
+                <Border
+                    Width="100"
+                    BorderBrush="#797979"
+                    BorderThickness="0.5">
+
+                    <Button
+                        Width="100"
+                        Content="Обновить"
+                        Click="UpdateClick"/>
 
                 </Border>
             </StackPanel>
         </Grid>
     </Grid>
 </Window>
-
