@@ -4,9 +4,9 @@ using System.Windows.Media.Animation;
 
 namespace Note.Helpers
 {
-    public class OpacityAnimation : BaseAnimation
+    public class HeightAnimation : BaseAnimation
     {
-        public OpacityAnimation(double from, double to, FrameworkElement element, double duration)
+        public HeightAnimation(double from, double to, FrameworkElement element, double duration)
             : base(from, to, element, duration) { }
 
         protected override void Animate(double from, double to)
@@ -16,7 +16,7 @@ namespace Note.Helpers
             Animation.To = to;
             Animation.Duration = TimeSpan.FromSeconds(Duration);
             Animation.Completed += Completed;
-            Element.BeginAnimation(UIElement.OpacityProperty, Animation);
+            Element.BeginAnimation(FrameworkElement.HeightProperty, Animation);
         }
     }
 }

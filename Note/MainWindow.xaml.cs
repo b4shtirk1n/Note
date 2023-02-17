@@ -29,34 +29,30 @@ namespace Note
 
         public MainWindow()
         {
+            new DirectoryInfo(path).Create();
+
             ChangeSkin(Properties.Settings.Default.Theme);
             InitializeComponent();
+            Fill();
             Update();
+        }
 
-            try
+        private void WindowStateChanged(object sender, EventArgs e)
+        {
+            switch (WindowState)
             {
-                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
-
-                AutoUpdater.Mandatory = true;
-                AutoUpdater.RunUpdateAsAdmin = false;
-                AutoUpdater.InstallationPath = currentDirectory.FullName;
-                AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/Note/Release/Version.xml");
-            }
-            catch
-            {
-                MessageBox.Show("Ошибка при обновлении");
+                case WindowState.Normal:
+                    OwnerScreen.Margin = new Thickness(0);
+                    break;
+                case WindowState.Maximized:
+                    OwnerScreen.Margin = new Thickness(5);
+                    break;
             }
         }
 
-        public void ChangeSkin(int themeid)
+        private void OwnerScreenMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Theme newTheme = themes.Find(x => x.Id == themeid);
-            ResourceDictionary theme = Application.LoadComponent(new Uri(newTheme.Path,
-                UriKind.Relative)) as ResourceDictionary;
-
-            Resources.Clear();
-            Resources.MergedDictionaries.Clear();
-            Resources.MergedDictionaries.Add(theme);
+            new HeightAnimation(0, 75, MoreCtx, 0.25).StartOut();
         }
 
         private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -76,7 +72,7 @@ namespace Note
             FileStream stream = new FileStream(currentItem.Path, FileMode.Open);
             textRange.Load(stream, DataFormats.Rtf);
             stream.Close();
-            Update();
+            Fill();
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e) => DragMove();
@@ -100,25 +96,18 @@ namespace Note
         private void MinimizeClick(object sender, RoutedEventArgs e) =>
             WindowState = WindowState.Minimized;
 
-        private void OpenCreateClick(object sender, RoutedEventArgs e)
+        private void OpenCreateDocClick(object sender, RoutedEventArgs e)
         {
-            OpacityAnimation[] createDialog =
-            {
-                new OpacityAnimation(0, 0.5, BackCreateDialog),
-                new OpacityAnimation(0, 1, CreateDialog)
-            };
-
-            foreach (var item in createDialog)
-                item.StartIn();
+            OpenDialog(BackCreateDoc, CreateDoc);
 
             FileName.Focus();
         }
 
-        private void CreateDialogMouseDown(object sender, MouseButtonEventArgs e) => CloseDialog();
+        private void CreateDocMouseDown(object sender, MouseButtonEventArgs e) => CloseCreateDoc();
 
-        private void CreateKeyDown(object sender, KeyEventArgs e)
+        private void BackgroundKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && CreateDialog.Visibility == Visibility.Visible)
+            if (e.Key == Key.Enter && CreateDoc.Visibility == Visibility.Visible)
                 CreateClick(sender, null);
         }
 
@@ -135,8 +124,8 @@ namespace Note
                 textRange.Save(fileStream, DataFormats.Rtf);
                 fileStream.Close();
             }
-            Update();
-            CloseDialog();
+            Fill();
+            CloseCreateDoc();
         }
 
         private void SearchGotFocus(object sender, RoutedEventArgs e) =>
@@ -150,10 +139,47 @@ namespace Note
             find = Search.Text;
 
             if (NoteList != null)
-                Update();
+                Fill();
         }
 
-        private void Update()
+        private void OpenMoreCtxClick(object sender, RoutedEventArgs e)
+        {
+            new HeightAnimation(0, 74, MoreCtx, 0.25).StartIn();
+        }
+
+        private void MoreCtxLostFocus(object sender, RoutedEventArgs e)
+        {
+            new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
+        }
+
+        private void OpenAppInfoClick(object sender, RoutedEventArgs e)
+        {
+            OpenDialog(BackAppInfo, AppInfo);
+        }
+
+        private void BackAppInfoMouseDown(object sender, RoutedEventArgs e)
+        {
+            CloseDialog(BackAppInfo, AppInfo);
+        }
+
+        private void UpdateClick(object sender, RoutedEventArgs e)
+        {
+            CloseDialog(BackAppInfo, AppInfo);
+            Update(true);
+        }
+
+        public void ChangeSkin(int themeid)
+        {
+            Theme newTheme = themes.Find(x => x.Id == themeid);
+            ResourceDictionary theme = Application.LoadComponent(new Uri(newTheme.Path,
+                UriKind.Relative)) as ResourceDictionary;
+
+            Resources.Clear();
+            Resources.MergedDictionaries.Clear();
+            Resources.MergedDictionaries.Add(theme);
+        }
+
+        private void Fill()
         {
             string[] files = Directory.GetFiles(path);
 
@@ -172,6 +198,24 @@ namespace Note
             NoteList.Items.Refresh();
         }
 
+        private void Update(bool error = false)
+        {
+            try
+            {
+                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+
+                AutoUpdater.Mandatory = true;
+                AutoUpdater.RunUpdateAsAdmin = false;
+                AutoUpdater.InstallationPath = currentDirectory.FullName;
+                AutoUpdater.ReportErrors = error;
+                AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/Note/Release/Version.xml");
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка при обновлении");
+            }
+        }
+
         private void Save()
         {
             TextRange textRange = new TextRange(Editor.Document.ContentStart,
@@ -183,28 +227,27 @@ namespace Note
             stream.Close();
         }
 
-        private void Edit(DependencyProperty property, object value)
-        {
-            Editor.Selection.ApplyPropertyValue(property, value);
-            isChange = true;
-        }
-
         private void TbxFocus(TextBox tbx, string check, string change)
         {
             if (tbx.Text == check)
                 tbx.Text = change;
         }
 
-        private void CloseDialog()
+        private void OpenDialog(FrameworkElement backElement, FrameworkElement element)
         {
-            OpacityAnimation[] createDialog =
-            {
-                new OpacityAnimation(0, 0.5, BackCreateDialog),
-                new OpacityAnimation(0, 1, CreateDialog)
-            };
+            new OpacityAnimation(0, 0.5, backElement, 0.25).StartIn();
+            new OpacityAnimation(0, 1, element, 0.25).StartIn();
+        }
 
-            foreach (var item in createDialog)
-                item.StartOut();
+        private void CloseDialog(FrameworkElement backElement, FrameworkElement element)
+        {
+            new OpacityAnimation(0, 0.5, backElement, 0.25).StartOut();
+            new OpacityAnimation(0, 1, element, 0.25).StartOut();
+        }
+
+        private void CloseCreateDoc()
+        {
+            CloseDialog(BackCreateDoc, CreateDoc);
 
             if (FileName.Text != string.Empty)
                 NoteList.SelectedItem = items.First(x => x.Name == FileName.Text);
@@ -213,23 +256,10 @@ namespace Note
             Editor.Focus();
         }
 
-        private void WindowStateChanged(object sender, EventArgs e)
+        private void Edit(DependencyProperty property, object value)
         {
-            switch (WindowState)
-            {
-                case WindowState.Normal:
-                    OwnerScreen.Margin = new Thickness(0);
-                    break;
-                case WindowState.Maximized:
-                    OwnerScreen.Margin = new Thickness(5);
-                    break;
-            }
-        }
-
-        private void OpacityAnimationCompleted(object sender, EventArgs e)
-        {
-            CreateDialog.Visibility = Visibility.Visible;
+            Editor.Selection.ApplyPropertyValue(property, value);
+            isChange = true;
         }
     }
 }
-
