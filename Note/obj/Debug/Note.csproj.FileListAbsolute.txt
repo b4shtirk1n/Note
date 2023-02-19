@@ -30,3 +30,6 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CopyComplete
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\White.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\Black.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.xml

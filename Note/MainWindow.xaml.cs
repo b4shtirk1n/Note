@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Note
 {
@@ -19,6 +20,7 @@ namespace Note
         private string find;
         private NoteItem currentItem;
         private TextRange textRange;
+        private FrameworkElement currentDiag;
         private bool isChange;
 
         private readonly List<Theme> themes = new List<Theme>()
@@ -31,10 +33,33 @@ namespace Note
         {
             new DirectoryInfo(path).Create();
 
-            ChangeSkin(Properties.Settings.Default.Theme);
+            int currentTheme = Properties.Settings.Default.Theme;
+
+            ChangeSkin(currentTheme);
             InitializeComponent();
             Fill();
             Update();
+
+            CmbTheme.ItemsSource = themes;
+            CmbTheme.SelectedIndex = currentTheme;
+        }
+
+        private void EnterEditorDrop(object sender, DragEventArgs e) =>
+            new OpacityAnimation(0, 0.5, DragNDrop, 0.25).StartIn();
+
+        private void EditorDrop(object sender, DragEventArgs e)
+        {
+            string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            Paragraph paragraph = new Paragraph();
+            Image image = new Image();
+            Uri uri = new Uri(droppedFiles[0]);
+            
+            image.Source = new BitmapImage(uri);
+            paragraph.Inlines.Add(new InlineUIContainer(image));
+            Editor.Document.Blocks.Add(paragraph);
+
+            new OpacityAnimation(0, 0.5, DragNDrop, 0.25).StartOut();
         }
 
         private void WindowStateChanged(object sender, EventArgs e)
@@ -50,14 +75,12 @@ namespace Note
             }
         }
 
-        private void OwnerScreenMouseDown(object sender, MouseButtonEventArgs e)
-        {
+        private void OwnerScreenMouseDown(object sender, MouseButtonEventArgs e) =>
             new HeightAnimation(0, 75, MoreCtx, 0.25).StartOut();
-        }
 
         private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Editor.IsEnabled = true;
+            Editor.Visibility = Visibility.Visible;
 
             if (NoteList.SelectedItem == currentItem || NoteList.SelectedItem == null)
                 return;
@@ -98,7 +121,7 @@ namespace Note
 
         private void OpenCreateDocClick(object sender, RoutedEventArgs e)
         {
-            OpenDialog(BackCreateDoc, CreateDoc);
+            OpenDialog(BackDiag, currentDiag = CreateDoc);
 
             FileName.Focus();
         }
@@ -142,35 +165,34 @@ namespace Note
                 Fill();
         }
 
-        private void OpenMoreCtxClick(object sender, RoutedEventArgs e)
-        {
+        private void OpenMoreCtxClick(object sender, RoutedEventArgs e) =>
             new HeightAnimation(0, 74, MoreCtx, 0.25).StartIn();
-        }
 
         private void MoreCtxLostFocus(object sender, RoutedEventArgs e)
         {
-            new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
+            if (OwnerScreen.Focusable || Editor.Focusable)
+                new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
         }
 
         private void OpenAppInfoClick(object sender, RoutedEventArgs e)
         {
-            OpenDialog(BackAppInfo, AppInfo);
+            new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
+
+            OpenDialog(BackDiag, currentDiag = AppInfo);
         }
 
-        private void BackAppInfoMouseDown(object sender, RoutedEventArgs e)
-        {
-            CloseDialog(BackAppInfo, AppInfo);
-        }
+        private void BackDiagMouseDown(object sender, RoutedEventArgs e) =>
+            CloseDialog(BackDiag, currentDiag);
 
         private void UpdateClick(object sender, RoutedEventArgs e)
         {
-            CloseDialog(BackAppInfo, AppInfo);
+            CloseDialog(BackDiag, AppInfo);
             Update(true);
         }
 
-        public void ChangeSkin(int themeid)
+        public void ChangeSkin(int themeId)
         {
-            Theme newTheme = themes.Find(x => x.Id == themeid);
+            Theme newTheme = themes.Find(x => x.Id == themeId);
             ResourceDictionary theme = Application.LoadComponent(new Uri(newTheme.Path,
                 UriKind.Relative)) as ResourceDictionary;
 
@@ -200,20 +222,13 @@ namespace Note
 
         private void Update(bool error = false)
         {
-            try
-            {
-                var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
+            var currentDirectory = new DirectoryInfo(Environment.CurrentDirectory);
 
-                AutoUpdater.Mandatory = true;
-                AutoUpdater.RunUpdateAsAdmin = false;
-                AutoUpdater.InstallationPath = currentDirectory.FullName;
-                AutoUpdater.ReportErrors = error;
-                AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/Note/Release/Version.xml");
-            }
-            catch
-            {
-                MessageBox.Show("Ошибка при обновлении");
-            }
+            AutoUpdater.Mandatory = true;
+            AutoUpdater.RunUpdateAsAdmin = false;
+            AutoUpdater.InstallationPath = currentDirectory.FullName;
+            AutoUpdater.ReportErrors = error;
+            AutoUpdater.Start("https://raw.githubusercontent.com/b4shtirk1n/Note/Release/Version.xml");
         }
 
         private void Save()
@@ -247,7 +262,7 @@ namespace Note
 
         private void CloseCreateDoc()
         {
-            CloseDialog(BackCreateDoc, CreateDoc);
+            CloseDialog(BackDiag, CreateDoc);
 
             if (FileName.Text != string.Empty)
                 NoteList.SelectedItem = items.First(x => x.Name == FileName.Text);
@@ -260,6 +275,25 @@ namespace Note
         {
             Editor.Selection.ApplyPropertyValue(property, value);
             isChange = true;
+        }
+
+        private void CmbThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.Theme = CmbTheme.SelectedIndex;
+            Properties.Settings.Default.Save();
+
+            ChangeSkin(CmbTheme.SelectedIndex);
+            CloseDialog(BackDiag, Settings);
+        }
+
+        private void CmbThemeClick(object sender, RoutedEventArgs e) =>
+            new HeightAnimation(0, 40, CmbTheme, 0.25).StartIn();
+
+        private void SettingsDiagClick(object sender, RoutedEventArgs e)
+        {
+            new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
+
+            OpenDialog(BackDiag, currentDiag = Settings);
         }
     }
 }
