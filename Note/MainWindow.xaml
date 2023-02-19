@@ -10,11 +10,13 @@
     Height="550"
     MinWidth="650"
     MinHeight="400"
+    AllowDrop="False"
     Icon="/Imgs/Icon.png"
     WindowStartupLocation="CenterScreen"
     MouseLeftButtonDown="WindowMouseDown"
     StateChanged="WindowStateChanged"
-    KeyDown="BackgroundKeyDown">
+    KeyDown="BackgroundKeyDown"
+    PreviewDragEnter="EnterEditorDrop">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>
@@ -22,6 +24,7 @@
 
     <Grid
         x:Name="OwnerScreen"
+        Style="{DynamicResource BackWindow}"
         MouseDown="OwnerScreenMouseDown">
 
         <Grid.RowDefinitions>
@@ -37,22 +40,22 @@
 
         <StackPanel
             Width="250"
-            Background="#F3F3F3"
+            Style="{DynamicResource AnotherSPanel}"
             Orientation="Horizontal">
 
             <Button
-                Style="{DynamicResource Exit}"
+                Style="{DynamicResource BtnExit}"
                 Click="ExitClick">
 
-                <Image Source="/Imgs/Exit.png"/>
+                <Image Source="{DynamicResource Exit}"/>
             </Button>
 
             <Button Click="FullscreenClick">
-                <Image Source="/Imgs/Fullscreen.png"/>
+                <Image Source="{DynamicResource Fullscreen}"/>
             </Button>
 
             <Button Click="MinimizeClick">
-                <Image Source="/Imgs/Minimize.png"/>
+                <Image Source="{DynamicResource Minimize}"/>
             </Button>
 
             <TextBlock
@@ -66,7 +69,7 @@
                 Click="OpenMoreCtxClick"
                 LostFocus="MoreCtxLostFocus">
 
-                <Image Source="/Imgs/Settings.png"/>
+                <Image Source="{DynamicResource Settings}"/>
             </Button>
         </StackPanel>
 
@@ -79,43 +82,46 @@
 
         </StackPanel>
 
+        <Separator VerticalAlignment="Bottom"/>
+
         <Separator
-            VerticalAlignment="Bottom"
-            BorderBrush="#797979"/>
-
-        <StackPanel
             Grid.Row="1"
-            Background="#F3F3F3"
-            Orientation="Horizontal">
+            VerticalAlignment="Bottom"/>
 
-            <Button
-                Margin="7 0 0 0"
-                Width="14"
-                Height="14"
-                Click="OpenCreateDocClick">
+        <Border Grid.Row="1">
+            <StackPanel
+                Style="{DynamicResource AnotherSPanel}"
+                Orientation="Horizontal">
 
-                <Image Source="/Imgs/Add.png"/>
-            </Button>
+                <Button
+                    Margin="7 0 0 0"
+                    Width="14"
+                    Height="14"
+                    Click="OpenCreateDocClick">
 
-            <TextBox
-                x:Name="Search"
-                Margin="5 0"
-                Width="216"
-                Height="18"
-                FontSize="10"
-                Foreground="#797979"
-                BorderThickness="0.5"
-                Text="Поиск..."
-                GotFocus="SearchGotFocus"
-                LostFocus="SearchLostFocus"
-                TextChanged="SearchTextChanged"/>
+                    <Image Source="{DynamicResource AddImg}"/>
+                </Button>
 
-        </StackPanel>
+                <TextBox
+                    x:Name="Search"
+                    Margin="5 0"
+                    Width="216"
+                    Height="18"
+                    FontSize="10"
+                    BorderThickness="0.5"
+                    Style="{DynamicResource Search}"
+                    Text="Поиск..."
+                    GotFocus="SearchGotFocus"
+                    LostFocus="SearchLostFocus"
+                    TextChanged="SearchTextChanged"/>
+
+            </StackPanel>
+        </Border>
 
         <ListView
             x:Name="NoteList"
             Grid.Row="2"
-            Background="#F3F3F3"
+            BorderThickness="0"
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectionChanged="NoteListSelectionChanged">
 
@@ -136,7 +142,6 @@
                                 Height="29"
                                 Margin="0 0 16 0"
                                 FontFamily="SF Pro Display"
-                                Foreground="#797979"
                                 Text="{Binding Description}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap"/>
@@ -153,18 +158,19 @@
             Grid.Row="1"
             Grid.Column="1"
             Grid.RowSpan="2"
+            Background="Transparent"
             BorderThickness="0"
             FontFamily="SF Pro Display"
-            IsEnabled="False"/>
+            Visibility="Hidden">
+
+        </RichTextBox>
 
         <Separator
             Grid.Column="2"
-            VerticalAlignment="Bottom"
-            BorderBrush="Black"/>
+            VerticalAlignment="Bottom"/>
 
         <Separator
             Grid.RowSpan="3"
-            BorderBrush="#797979"
             HorizontalAlignment="Right">
 
             <Separator.LayoutTransform>
@@ -181,16 +187,12 @@
             Height="75"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Background="White"
-            BorderBrush="Black"
             BorderThickness="0.5"
-            Visibility="Hidden">
+            Visibility="Hidden"
+            Style="{DynamicResource MoreCtx}">
 
             <StackPanel Width="100">
-                <Border
-                    BorderBrush="Black"
-                    BorderThickness="0.25">
-
+                <Border BorderThickness="0.25">
                     <Button Width="100">
                         <TextBlock
                             Padding="10 0"
@@ -201,11 +203,11 @@
                     </Button>
                 </Border>
 
-                <Border
-                    BorderBrush="Black"
-                    BorderThickness="0.25">
+                <Border BorderThickness="0.25">
+                    <Button
+                        Width="100"
+                        Click="SettingsDiagClick">
 
-                    <Button Width="100">
                         <TextBlock
                             Padding="10 0"
                             Width="100"
@@ -215,10 +217,7 @@
                     </Button>
                 </Border>
 
-                <Border
-                    BorderBrush="Black"
-                    BorderThickness="0.25">
-
+                <Border BorderThickness="0.25">
                     <Button
                         Width="100"
                         Click="OpenAppInfoClick">
@@ -233,33 +232,34 @@
                 </Border>
             </StackPanel>
         </Border>
-        
+
+        <Grid
+            x:Name="BackDiag"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            Background="Black"
+            Visibility="Hidden"
+            MouseDown="BackDiagMouseDown"/>
+
         <Grid
             x:Name="CreateDoc"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Visibility="Hidden">
 
-            <Grid
-                x:Name="BackCreateDoc"
-                Background="Black"
-                Opacity="0"
-                MouseDown="CreateDocMouseDown"/>
-
             <StackPanel
                 Width="400"
                 Height="150"
-                Background="White">
+                Style="{DynamicResource AnotherSPanel}">
 
                 <TextBlock
                     Margin="5"
                     FontFamily="SF Pro Display"
                     FontWeight="Black"
-                    Foreground="Black"
                     TextAlignment="Center"
                     Text="Создать заметку"/>
 
-                <Separator BorderBrush="#797979"/>
+                <Separator/>
 
                 <TextBox
                     x:Name="FileName"
@@ -271,7 +271,6 @@
 
                 <Border
                     Width="100"
-                    BorderBrush="#797979"
                     BorderThickness="0.5">
 
                     <Button
@@ -284,42 +283,38 @@
         </Grid>
 
         <Grid
-            x:Name="AppInfo"
+            x:Name="Settings"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
             Visibility="Hidden">
 
-            <Grid
-                x:Name="BackAppInfo"
-                Background="Black"
-                Opacity="0"
-                MouseDown="BackAppInfoMouseDown"/>
-
             <StackPanel
                 Width="300"
                 Height="150"
-                Background="White">
+                Style="{DynamicResource AnotherSPanel}">
 
                 <TextBlock
                     Margin="5"
                     FontFamily="SF Pro Display"
                     FontWeight="Black"
-                    Foreground="Black"
+                    VerticalAlignment="Top"
                     TextAlignment="Center"
-                    Text="О программе"/>
+                    Text="Настройки"/>
 
-                <Separator BorderBrush="#797979"/>
+                <Separator/>
 
-                <TextBlock
-                    Margin="30"
+                <ComboBox
+                    x:Name="CmbTheme"
+                    Margin="0 30"
+                    Width="200"
                     Height="20"
-                    FontSize="12"
                     HorizontalAlignment="Center"
-                    Text="Текущая версия - v0.8"/>
+                    DisplayMemberPath="Name"
+                    SelectionChanged="CmbThemeSelectionChanged"/>
 
                 <Border
                     Width="100"
-                    BorderBrush="#797979"
+                    VerticalAlignment="Bottom"
                     BorderThickness="0.5">
 
                     <Button
@@ -330,5 +325,55 @@
                 </Border>
             </StackPanel>
         </Grid>
+
+        <Grid
+            x:Name="AppInfo"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            Visibility="Hidden">
+
+            <StackPanel
+                Width="300"
+                Height="150"
+                Style="{DynamicResource AnotherSPanel}">
+
+                <TextBlock
+                    Margin="5"
+                    FontFamily="SF Pro Display"
+                    FontWeight="Black"
+                    TextAlignment="Center"
+                    Text="О программе"/>
+
+                <Separator/>
+
+                <TextBlock
+                    Margin="30"
+                    Height="20"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Text="Текущая версия - v0.8"/>
+
+                <Border
+                    Width="100"
+                    BorderThickness="0.5">
+
+                    <Button
+                        Width="100"
+                        Content="Обновить"
+                        Click="UpdateClick"/>
+
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <Grid
+            x:Name="DragNDrop"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            AllowDrop="True"
+            Visibility="Hidden"
+            Background="Black"
+            Drop="EditorDrop"/>
+
     </Grid>
 </Window>
