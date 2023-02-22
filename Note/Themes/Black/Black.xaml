@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <SolidColorBrush x:Key="TxtColor" Color="#B2BBB6"/>
-    <BitmapImage x:Key="Exit" UriSource="/Imgs/ExitBlack.png"/>
-    <BitmapImage x:Key="Fullscreen" UriSource="/Imgs/FullscreenBlack.png"/>
-    <BitmapImage x:Key="Minimize" UriSource="/Imgs/MinimizeBlack.png"/>
-    <BitmapImage x:Key="Settings" UriSource="/Imgs/SettingsBlack.png"/>
-    <BitmapImage x:Key="AddImg" UriSource="/Imgs/AddBlack.png"/>
+    <BitmapImage x:Key="Exit" UriSource="/Themes/Black/ExitBlack.png"/>
+    <BitmapImage x:Key="Fullscreen" UriSource="/Themes/Black/FullscreenBlack.png"/>
+    <BitmapImage x:Key="Minimize" UriSource="/Themes/Black/MinimizeBlack.png"/>
+    <BitmapImage x:Key="Settings" UriSource="/Themes/Black/SettingsBlack.png"/>
+    <BitmapImage x:Key="AddImg" UriSource="/Themes/Black/AddBlack.png"/>
 
     <Style
         x:Key="BackWindow"
@@ -27,16 +27,30 @@
     </Style>
 
     <Style
-        x:Key="MoreCtx"
+        x:Key="BtnCont"
         TargetType="Border">
-
-        <Setter
-            Property="Background"
-            Value="#1B1D1E"/>
 
         <Setter
             Property="BorderBrush"
             Value="#B2BBB6"/>
+
+        <Setter
+            Property="Background"
+            Value="#3E4642"/>
+
+    </Style>
+
+    <Style
+        x:Key="MoreCtx"
+        TargetType="Border">
+
+        <Setter
+            Property="BorderBrush"
+            Value="#B2BBB6"/>
+
+        <Setter
+            Property="Background"
+            Value="#1B1D1E"/>
 
     </Style>
 
@@ -159,6 +173,10 @@
         <Setter
             Property="Foreground"
             Value="{DynamicResource TxtColor}"/>
+
+        <Setter
+            Property="Background"
+            Value="#1B1D1E"/>
 
         <Setter
             Property="BorderBrush"

@@ -3,13 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <SolidColorBrush x:Key="TxtColor" Color="Black"/>
-    <BitmapImage x:Key="Exit" UriSource="/Imgs/Exit.png"/>
-    <BitmapImage x:Key="Fullscreen" UriSource="/Imgs/Fullscreen.png"/>
-    <BitmapImage x:Key="Minimize" UriSource="/Imgs/Minimize.png"/>
-    <BitmapImage x:Key="Settings" UriSource="/Imgs/Settings.png"/>
-    <BitmapImage x:Key="AddImg" UriSource="/Imgs/Add.png"/>
+    <BitmapImage x:Key="Exit" UriSource="/Themes/White/Exit.png"/>
+    <BitmapImage x:Key="Fullscreen" UriSource="/Themes/White/Fullscreen.png"/>
+    <BitmapImage x:Key="Minimize" UriSource="/Themes/White/Minimize.png"/>
+    <BitmapImage x:Key="Settings" UriSource="/Themes/White/Settings.png"/>
+    <BitmapImage x:Key="AddImg" UriSource="/Themes/White/Add.png"/>
 
-    <Style TargetType="Grid" x:Key="BackWindow">
+    <Style
+        x:Key="BackWindow"
+        TargetType="Grid">
+
         <Setter
             Property="Background"
             Value="White"/>
@@ -23,14 +26,31 @@
 
     </Style>
 
-    <Style TargetType="Border" x:Key="MoreCtx">
-        <Setter
-            Property="Background"
-            Value="White"/>
+    <Style
+        x:Key="BtnCont"
+        TargetType="Border">
 
         <Setter
             Property="BorderBrush"
             Value="#797979"/>
+
+        <Setter
+            Property="Background"
+            Value="#F3F3F3"/>
+
+    </Style>
+
+    <Style
+        x:Key="MoreCtx"
+        TargetType="Border">
+
+        <Setter
+            Property="BorderBrush"
+            Value="#797979"/>
+
+        <Setter
+            Property="Background"
+            Value="White"/>
 
     </Style>
 
@@ -135,6 +155,17 @@
             Property="Foreground"
             Value="{DynamicResource TxtColor}"/>
 
+        <Style.Triggers>
+            <Trigger
+                Property="IsEnabled"
+                Value="False">
+
+                <Setter
+                    Property="TextBlock.Foreground"
+                    Value="#797979"/>
+
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
     <Style TargetType="TextBox">
@@ -202,7 +233,10 @@
         </Style.Resources>
     </Style>
 
-    <Style TargetType="StackPanel" x:Key="AnotherSPanel">
+    <Style
+        x:Key="AnotherSPanel"
+        TargetType="StackPanel">
+
         <Setter
             Property="Background"
             Value="#F3F3F3"/>
@@ -237,6 +271,16 @@
         <Style.Triggers>
             <Trigger
                 Property="IsMouseOver"
+                Value="True">
+
+                <Setter
+                    Property="Background"
+                    Value="#CCCCCC"/>
+
+            </Trigger>
+
+            <Trigger
+                Property="IsSelected"
                 Value="True">
 
                 <Setter

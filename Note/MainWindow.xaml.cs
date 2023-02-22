@@ -1,5 +1,5 @@
 ﻿using AutoUpdaterDotNET;
-using Note.Helpers;
+using LightAnimation;
 using Note.Models;
 using System;
 using System.Collections.Generic;
@@ -15,18 +15,19 @@ namespace Note
 {
     public partial class MainWindow : Window
     {
-        private List<NoteItem> items = new List<NoteItem>();
-        private const string path = "Documents";
         private string find;
-        private NoteItem currentItem;
-        private TextRange textRange;
-        private FrameworkElement currentDiag;
         private bool isChange;
-
+        private TextRange textRange;
+        private NoteItem currentItem;
+        private FrameworkElement currentDiag;
+        private HeightAnimation moreCtx;
+        private HeightAnimation contBtnDel;
+        private const string path = "Documents";
+        private List<NoteItem> items = new List<NoteItem>();
         private readonly List<Theme> themes = new List<Theme>()
         {
-            new Theme (0, "White", "\\Themes\\White.xaml"),
-            new Theme (1, "Black", "\\Themes\\Black.xaml")
+            new Theme (0, "White", "\\Themes\\White\\White.xaml"),
+            new Theme (1, "Black", "\\Themes\\Black\\Black.xaml")
         };
 
         public MainWindow()
@@ -42,6 +43,9 @@ namespace Note
 
             CmbTheme.ItemsSource = themes;
             CmbTheme.SelectedIndex = currentTheme;
+
+            moreCtx = new HeightAnimation(0, 100, MoreCtx, 0.25);
+            contBtnDel = new HeightAnimation(0, 24, ContBtnDel, 0.25);
         }
 
         private void EnterEditorDrop(object sender, DragEventArgs e) =>
@@ -54,7 +58,7 @@ namespace Note
             Paragraph paragraph = new Paragraph();
             Image image = new Image();
             Uri uri = new Uri(droppedFiles[0]);
-            
+
             image.Source = new BitmapImage(uri);
             paragraph.Inlines.Add(new InlineUIContainer(image));
             Editor.Document.Blocks.Add(paragraph);
@@ -75,12 +79,18 @@ namespace Note
             }
         }
 
-        private void OwnerScreenMouseDown(object sender, MouseButtonEventArgs e) =>
-            new HeightAnimation(0, 75, MoreCtx, 0.25).StartOut();
-
         private void NoteListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Editor.Visibility = Visibility.Visible;
+
+            if (ContBtnDel.Visibility == Visibility.Visible)
+            {
+                if (NoteList.SelectedItems == null)
+                    BtnDelete.IsEnabled = false;
+                else
+                    BtnDelete.IsEnabled = true;
+                return;
+            }
 
             if (NoteList.SelectedItem == currentItem || NoteList.SelectedItem == null)
                 return;
@@ -146,9 +156,10 @@ namespace Note
                 textRange.Text = FileName.Text;
                 textRange.Save(fileStream, DataFormats.Rtf);
                 fileStream.Close();
+
+                Fill();
+                CloseCreateDoc();
             }
-            Fill();
-            CloseCreateDoc();
         }
 
         private void SearchGotFocus(object sender, RoutedEventArgs e) =>
@@ -166,17 +177,54 @@ namespace Note
         }
 
         private void OpenMoreCtxClick(object sender, RoutedEventArgs e) =>
-            new HeightAnimation(0, 74, MoreCtx, 0.25).StartIn();
+            AnimationState(moreCtx);
 
-        private void MoreCtxLostFocus(object sender, RoutedEventArgs e)
+        private void OwnerScreenMouseEnter(object sender, MouseEventArgs e) =>
+            moreCtx.StartOut();
+
+        private void DeleteManageClick(object sender, RoutedEventArgs e)
         {
-            if (OwnerScreen.Focusable || Editor.Focusable)
-                new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
+            moreCtx.StartOut();
+
+            AnimationState(contBtnDel);
+        }
+
+        private void DeleteClick(object sender, RoutedEventArgs e)
+        {
+            contBtnDel.StartOut();
+
+            Editor.Document.Blocks.Clear();
+
+            foreach (var item in NoteList.SelectedItems.Cast<NoteItem>())
+                File.Delete(item.Path);
+
+            NoteList.SelectedItem = null;
+            currentItem = null;
+            Fill();
+        }
+
+        private void SettingsDiagClick(object sender, RoutedEventArgs e)
+        {
+            moreCtx.StartOut();
+
+            OpenDialog(BackDiag, currentDiag = Settings);
+        }
+
+        private void CmbThemeClick(object sender, RoutedEventArgs e) =>
+            moreCtx.StartIn();
+
+        private void CmbThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.Theme = CmbTheme.SelectedIndex;
+            Properties.Settings.Default.Save();
+
+            ChangeSkin(CmbTheme.SelectedIndex);
+            CloseDialog(BackDiag, Settings);
         }
 
         private void OpenAppInfoClick(object sender, RoutedEventArgs e)
         {
-            new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
+            moreCtx.StartOut();
 
             OpenDialog(BackDiag, currentDiag = AppInfo);
         }
@@ -208,9 +256,7 @@ namespace Note
             items.Clear();
 
             foreach (string file in files)
-            {
                 items.Add(new NoteItem(file));
-            }
 
             if (find != "Поиск..." && items != null)
                 items = items.Where(x => x.Name.Contains(Search.Text) ||
@@ -263,7 +309,6 @@ namespace Note
         private void CloseCreateDoc()
         {
             CloseDialog(BackDiag, CreateDoc);
-
             if (FileName.Text != string.Empty)
                 NoteList.SelectedItem = items.First(x => x.Name == FileName.Text);
 
@@ -277,23 +322,12 @@ namespace Note
             isChange = true;
         }
 
-        private void CmbThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AnimationState(BaseAnimation<double> animation)
         {
-            Properties.Settings.Default.Theme = CmbTheme.SelectedIndex;
-            Properties.Settings.Default.Save();
-
-            ChangeSkin(CmbTheme.SelectedIndex);
-            CloseDialog(BackDiag, Settings);
-        }
-
-        private void CmbThemeClick(object sender, RoutedEventArgs e) =>
-            new HeightAnimation(0, 40, CmbTheme, 0.25).StartIn();
-
-        private void SettingsDiagClick(object sender, RoutedEventArgs e)
-        {
-            new HeightAnimation(0, 74, MoreCtx, 0.25).StartOut();
-
-            OpenDialog(BackDiag, currentDiag = Settings);
+            if (MoreCtx.Visibility == Visibility.Hidden)
+                animation.StartIn();
+            else
+                animation.StartOut();
         }
     }
 }

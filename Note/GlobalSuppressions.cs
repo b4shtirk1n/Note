@@ -5,5 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0017:Упростите инициализацию объекта", Justification = "<Ожидание>", Scope = "member", Target = "~M:Note.Helpers.OpacityAnimation.Animate(System.Double,System.Double)")]
 [assembly: SuppressMessage("Style", "IDE0017:Упростите инициализацию объекта", Justification = "<Ожидание>", Scope = "member", Target = "~M:Note.MainWindow.CreateClick(System.Object,System.Windows.RoutedEventArgs)")]
