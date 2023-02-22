@@ -186,7 +186,7 @@ namespace Note
         {
             moreCtx.StartOut();
 
-            AnimationState(BtnDel, contBtnDel);
+            AnimationState(ContBtnDel, contBtnDel);
         }
 
         private void DeleteClick(object sender, RoutedEventArgs e)
