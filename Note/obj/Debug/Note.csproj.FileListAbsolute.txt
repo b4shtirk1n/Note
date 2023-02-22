@@ -27,9 +27,12 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Web.WebView2.WinF
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Web.WebView2.Wpf.xml
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note_Content.g.cs
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Note.csproj.CopyComplete
-C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\White.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\App.baml
-C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\Black.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.dll
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.pdb
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\Black\Black.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\White\White.baml
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\LightAnimation.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\LightAnimation.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\LightAnimation.xml

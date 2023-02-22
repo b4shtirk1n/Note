@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LightAnimation</name>
+    </assembly>
+    <members>
+        <member name="T:LightAnimation.BaseAnimation`1">
+            <summary>
+            Базовый класс для всех анимаций
+            </summary>
+        </member>
+        <member name="P:LightAnimation.BaseAnimation`1.From">
+            <summary>
+            Свойство определяющее начальное значение анимации
+            </summary>
+        </member>
+        <member name="P:LightAnimation.BaseAnimation`1.To">
+            <summary>
+            Свойство определяющее конечное значение анимации
+            </summary>
+        </member>
+        <member name="P:LightAnimation.BaseAnimation`1.Element">
+            <summary>
+            Свойство определяющее объект
+            на который будет воздействовать анимация
+            </summary>
+        </member>
+        <member name="P:LightAnimation.BaseAnimation`1.Duration">
+            <summary>
+            Свойство для определения времени анимации
+            </summary>
+        </member>
+        <member name="M:LightAnimation.BaseAnimation`1.#ctor(`0,`0,System.Windows.FrameworkElement,System.Double)">
+            <summary>
+            Конструктор для создания объекта анимации
+            </summary>
+        </member>
+        <member name="M:LightAnimation.BaseAnimation`1.StartIn">
+            <summary>
+            Запуск анимации
+            </summary>
+        </member>
+        <member name="M:LightAnimation.BaseAnimation`1.StartOut">
+            <summary>
+            Запуск анимации в обратном направлении
+            </summary>
+        </member>
+        <member name="M:LightAnimation.BaseAnimation`1.Animate(`0,`0)">
+            <summary>
+            Метод анимации
+            </summary>
+        </member>
+        <member name="M:LightAnimation.BaseAnimation`1.Completed(System.Object,System.EventArgs)">
+            <summary>
+            Метод срабатывающий по завершению анимации
+            </summary>
+        </member>
+        <member name="T:LightAnimation.HeightAnimation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LightAnimation.HeightAnimation.#ctor(System.Double,System.Double,System.Windows.FrameworkElement,System.Double)">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:LightAnimation.HeightAnimation.Animate(System.Double,System.Double)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:LightAnimation.MarginAnimation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LightAnimation.MarginAnimation.#ctor(System.Windows.Thickness,System.Windows.Thickness,System.Windows.FrameworkElement,System.Double)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LightAnimation.MarginAnimation.Animate(System.Windows.Thickness,System.Windows.Thickness)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:LightAnimation.OpacityAnimation">
+            <summary>
+            Анимация прозрачности
+            </summary>
+        </member>
+        <member name="M:LightAnimation.OpacityAnimation.#ctor(System.Double,System.Double,System.Windows.FrameworkElement,System.Double)">
+            <summary>
+            Конструктор анимации прозрачности,
+            принимающий в себя значения из базового класса анимации
+            </summary>
+        </member>
+        <member name="M:LightAnimation.OpacityAnimation.Animate(System.Double,System.Double)">
+            <summary>
+            Переопределённый метод анимации,
+            управляющий прозрачностью элемента
+            </summary>
+        </member>
+        <member name="T:LightAnimation.WidthAnimation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LightAnimation.WidthAnimation.#ctor(System.Double,System.Double,System.Windows.FrameworkElement,System.Double)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LightAnimation.WidthAnimation.Animate(System.Double,System.Double)">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>
