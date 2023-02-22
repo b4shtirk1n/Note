@@ -20,9 +20,9 @@ namespace Note
         private TextRange textRange;
         private NoteItem currentItem;
         private FrameworkElement currentDiag;
-        private HeightAnimation moreCtx;
-        private HeightAnimation contBtnDel;
         private const string path = "Documents";
+        private readonly HeightAnimation moreCtx;
+        private readonly HeightAnimation contBtnDel;
         private List<NoteItem> items = new List<NoteItem>();
         private readonly List<Theme> themes = new List<Theme>()
         {
@@ -86,9 +86,9 @@ namespace Note
             if (ContBtnDel.Visibility == Visibility.Visible)
             {
                 if (NoteList.SelectedItems == null)
-                    BtnDelete.IsEnabled = false;
+                    BtnDel.IsEnabled = false;
                 else
-                    BtnDelete.IsEnabled = true;
+                    BtnDel.IsEnabled = true;
                 return;
             }
 
@@ -177,7 +177,7 @@ namespace Note
         }
 
         private void OpenMoreCtxClick(object sender, RoutedEventArgs e) =>
-            AnimationState(moreCtx);
+            AnimationState(MoreCtx, moreCtx);
 
         private void OwnerScreenMouseEnter(object sender, MouseEventArgs e) =>
             moreCtx.StartOut();
@@ -186,7 +186,7 @@ namespace Note
         {
             moreCtx.StartOut();
 
-            AnimationState(contBtnDel);
+            AnimationState(BtnDel, contBtnDel);
         }
 
         private void DeleteClick(object sender, RoutedEventArgs e)
@@ -322,9 +322,9 @@ namespace Note
             isChange = true;
         }
 
-        private void AnimationState(BaseAnimation<double> animation)
+        private void AnimationState(UIElement element, BaseAnimation<double> animation)
         {
-            if (MoreCtx.Visibility == Visibility.Hidden)
+            if (element.Visibility == Visibility.Hidden)
                 animation.StartIn();
             else
                 animation.StartOut();

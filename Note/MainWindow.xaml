@@ -166,7 +166,7 @@
             Visibility="Hidden">
 
             <Button
-                x:Name="BtnDelete"
+                x:Name="BtnDel"
                 Width="auto"
                 IsEnabled="False"
                 Content="Удалить"
