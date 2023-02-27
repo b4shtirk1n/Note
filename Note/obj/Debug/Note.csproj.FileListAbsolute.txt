@@ -36,3 +36,8 @@ C:\Users\b4shtirk1n\source\repos\Note\Note\obj\Debug\Themes\White\White.baml
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\LightAnimation.dll
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\LightAnimation.pdb
 C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\LightAnimation.xml
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\DiscordRPC.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Newtonsoft.Json.dll
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\DiscordRPC.pdb
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\DiscordRPC.xml
+C:\Users\b4shtirk1n\source\repos\Note\Note\bin\Debug\Newtonsoft.Json.xml

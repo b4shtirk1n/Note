@@ -1,8 +1,11 @@
 ﻿using AutoUpdaterDotNET;
+using DiscordRPC;
+using DiscordRPC.Message;
 using LightAnimation;
 using Note.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -19,8 +22,10 @@ namespace Note
         private bool isChange;
         private TextRange textRange;
         private NoteItem currentItem;
+        private DiscordRpcClient client;
         private FrameworkElement currentDiag;
         private const string path = "Documents";
+        private readonly BackgroundWorker worker;
         private readonly HeightAnimation moreCtx;
         private readonly HeightAnimation contBtnDel;
         private List<NoteItem> items = new List<NoteItem>();
@@ -44,12 +49,15 @@ namespace Note
             CmbTheme.ItemsSource = themes;
             CmbTheme.SelectedIndex = currentTheme;
 
-            moreCtx = new HeightAnimation(0, 100, MoreCtx, 0.25);
-            contBtnDel = new HeightAnimation(0, 24, ContBtnDel, 0.25);
+            moreCtx = new HeightAnimation(0, 100, MoreCtx);
+            contBtnDel = new HeightAnimation(0, 24, ContBtnDel);
+            worker = new BackgroundWorker();
+            worker.DoWork += InitRichPersence;
+            worker.RunWorkerAsync();
         }
 
         private void EnterEditorDrop(object sender, DragEventArgs e) =>
-            new OpacityAnimation(0, 0.5, DragNDrop, 0.25).StartIn();
+            new OpacityAnimation(0, 0.5, DragNDrop).StartIn();
 
         private void EditorDrop(object sender, DragEventArgs e)
         {
@@ -63,7 +71,7 @@ namespace Note
             paragraph.Inlines.Add(new InlineUIContainer(image));
             Editor.Document.Blocks.Add(paragraph);
 
-            new OpacityAnimation(0, 0.5, DragNDrop, 0.25).StartOut();
+            new OpacityAnimation(0, 0.5, DragNDrop).StartOut();
         }
 
         private void WindowStateChanged(object sender, EventArgs e)
@@ -104,6 +112,7 @@ namespace Note
             currentItem = (NoteItem)NoteList.SelectedItem;
             FileStream stream = new FileStream(currentItem.Path, FileMode.Open);
             textRange.Load(stream, DataFormats.Rtf);
+            worker.RunWorkerAsync();
             stream.Close();
             Fill();
         }
@@ -133,7 +142,7 @@ namespace Note
         {
             OpenDialog(BackDiag, currentDiag = CreateDoc);
 
-            FileName.Focus();
+            NewFileName.Focus();
         }
 
         private void CreateDocMouseDown(object sender, MouseButtonEventArgs e) => CloseCreateDoc();
@@ -146,14 +155,14 @@ namespace Note
 
         private void CreateClick(object sender, RoutedEventArgs e)
         {
-            if (FileName.Text != string.Empty && items.Find(x => x.Name == FileName.Text) == null)
+            if (NameValidation(NewFileName))
             {
                 var doc = new FlowDocument();
-                FileStream fileStream = new FileStream($"{path}/{FileName.Text}.rtf",
+                FileStream fileStream = new FileStream($"{path}/{NewFileName.Text}.rtf",
                     FileMode.Create);
 
                 TextRange textRange = new TextRange(doc.ContentStart, doc.ContentEnd);
-                textRange.Text = FileName.Text;
+                textRange.Text = NewFileName.Text;
                 textRange.Save(fileStream, DataFormats.Rtf);
                 fileStream.Close();
 
@@ -179,8 +188,7 @@ namespace Note
         private void OpenMoreCtxClick(object sender, RoutedEventArgs e) =>
             AnimationState(MoreCtx, moreCtx);
 
-        private void OwnerScreenMouseEnter(object sender, MouseEventArgs e) =>
-            moreCtx.StartOut();
+        private void OwnerScreenMouseEnter(object sender, MouseEventArgs e) => moreCtx.StartOut();
 
         private void DeleteManageClick(object sender, RoutedEventArgs e)
         {
@@ -200,6 +208,7 @@ namespace Note
 
             NoteList.SelectedItem = null;
             currentItem = null;
+            worker.RunWorkerAsync();
             Fill();
         }
 
@@ -210,8 +219,7 @@ namespace Note
             OpenDialog(BackDiag, currentDiag = Settings);
         }
 
-        private void CmbThemeClick(object sender, RoutedEventArgs e) =>
-            moreCtx.StartIn();
+        private void CmbThemeClick(object sender, RoutedEventArgs e) => moreCtx.StartIn();
 
         private void CmbThemeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -219,7 +227,9 @@ namespace Note
             Properties.Settings.Default.Save();
 
             ChangeSkin(CmbTheme.SelectedIndex);
-            CloseDialog(BackDiag, Settings);
+
+            if (currentItem != null)
+                CloseDialog();
         }
 
         private void OpenAppInfoClick(object sender, RoutedEventArgs e)
@@ -230,12 +240,31 @@ namespace Note
         }
 
         private void BackDiagMouseDown(object sender, RoutedEventArgs e) =>
-            CloseDialog(BackDiag, currentDiag);
+            CloseDialog();
 
         private void UpdateClick(object sender, RoutedEventArgs e)
         {
-            CloseDialog(BackDiag, AppInfo);
+            CloseDialog();
             Update(true);
+        }
+
+        private void OpenRenameDiagClick(object sender, RoutedEventArgs e)
+        {
+            FileName.Text = currentItem.Name;
+            OpenDialog(BackDiag, currentDiag = RenameDoc);
+        }
+
+        private void RenameClick(object sender, RoutedEventArgs e)
+        {
+            if (NameValidation(FileName))
+            {
+                if (currentItem.Name == FileName.Text)
+                    return;
+
+                currentItem.Rename(FileName.Text);
+                Fill();
+                CloseDialog();
+            }
         }
 
         public void ChangeSkin(int themeId)
@@ -248,6 +277,9 @@ namespace Note
             Resources.MergedDictionaries.Clear();
             Resources.MergedDictionaries.Add(theme);
         }
+
+        private bool NameValidation(TextBox tbx) =>
+            tbx.Text != string.Empty && items.Find(x => x.Name == tbx.Text) == null;
 
         private void Fill()
         {
@@ -296,19 +328,19 @@ namespace Note
 
         private void OpenDialog(FrameworkElement backElement, FrameworkElement element)
         {
-            new OpacityAnimation(0, 0.5, backElement, 0.25).StartIn();
-            new OpacityAnimation(0, 1, element, 0.25).StartIn();
+            new OpacityAnimation(0, 0.5, backElement).StartIn();
+            new OpacityAnimation(0, 1, element).StartIn();
         }
 
-        private void CloseDialog(FrameworkElement backElement, FrameworkElement element)
+        private void CloseDialog()
         {
-            new OpacityAnimation(0, 0.5, backElement, 0.25).StartOut();
-            new OpacityAnimation(0, 1, element, 0.25).StartOut();
+            new OpacityAnimation(0, 0.5, BackDiag).StartOut();
+            new OpacityAnimation(0, 1, currentDiag).StartOut();
         }
 
         private void CloseCreateDoc()
         {
-            CloseDialog(BackDiag, CreateDoc);
+            CloseDialog();
             if (FileName.Text != string.Empty)
                 NoteList.SelectedItem = items.First(x => x.Name == FileName.Text);
 
@@ -328,6 +360,40 @@ namespace Note
                 animation.StartIn();
             else
                 animation.StartOut();
+        }
+
+        private void InitRichPersence(object sender, DoWorkEventArgs e)
+        {
+            if (client == null)
+            {
+                client = new DiscordRpcClient("1079356595215011890");
+                client.Initialize();
+            }
+
+            if (currentItem == null)
+            {
+                client.SetPresence(NewRichPersence());
+                return;
+            }
+
+            if (client.CurrentPresence.Details == currentItem.Name)
+                return;
+
+            client.SetPresence(NewRichPersence(currentItem.Name, "Edits the Document"));
+        }
+
+        private RichPresence NewRichPersence(string detail = null, string state = "In app")
+        {
+            return new RichPresence()
+            {
+                Details = detail,
+                State = state,
+                Assets = new Assets()
+                {
+                    LargeImageKey = "noteicon"
+                },
+                Timestamps = Timestamps.Now
+            };
         }
     }
 }
