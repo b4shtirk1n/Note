@@ -130,10 +130,11 @@
 
                         <StackPanel.ContextMenu>
                             <ContextMenu>
-                                <MenuItem
-                                    Header="Переименовать"
-                                    Click="OpenRenameDiagClick"/>
-
+                                <MenuItem Click="OpenRenameDiagClick">
+                                    <MenuItem.Header>
+                                        <TextBlock Foreground="Black" Text="Переименовать"/>
+                                    </MenuItem.Header>
+                                </MenuItem>
                             </ContextMenu>
                         </StackPanel.ContextMenu>
 
