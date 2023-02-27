@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Shapes;
 
 namespace Note.Models
 {
@@ -27,6 +29,12 @@ namespace Note.Models
 
             Text = textRange.Text;
             Description = Text.Length > 80 ? Text.Substring(0, 80) : Text;
+        }
+
+        public void Rename(string newName)
+        {
+            string path = Path.Substring(0, (Path.Length - new FileInfo(Path).Name.Length)) + newName;
+            File.Move(Path, path);
         }
     }
 }

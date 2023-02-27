@@ -36,7 +36,7 @@
 
         <Setter
             Property="Background"
-            Value="#3E4642"/>
+            Value="#2B2A2C"/>
 
     </Style>
 
